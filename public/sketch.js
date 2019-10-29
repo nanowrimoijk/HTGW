@@ -54,7 +54,6 @@ var arrowKeys = true;
 var chatX = 10;
 var chatY = 10;
 
-let overBox = false;
 
 var thing = {
 	pos: { x: player.pos.x - 7, y: player.pos.y - 7 },
@@ -62,9 +61,7 @@ var thing = {
 
 function setup() {
 	createCanvas(15 * UNIT, 15 * UNIT);
-	if(menu == false){
-		noCursor();
-	}
+	noCursor();
 
 	levels.test.walls.push({
 		type: 'wall',
@@ -328,43 +325,50 @@ function draw() {
 
 	var TLC = thing;
 
+	//draws the menu
+	if (menu == true) {
+		//button
+		fill('blue');
+		rect(bx, by, boxSize, boxSize);
+	}
+
 	//draws walls and other non-player entities
-	if(menu == false){
+	if (menu == false) {
 		entities.forEach(function(ele) {
-		if (ele.id != undefined && ele.type == 'player') {
-			if (ele.pos.x != undefined && ele.pos.x != null && ele.pos.x != 'NaN') {
-				if (ele.pos.y != undefined && ele.pos.y != null && ele.pos.y != 'NaN') {
-					var offsetX = TLC.pos.x - ele.pos.x;
-					var offsetY = TLC.pos.y - ele.pos.y;
-					//ele.pos is going NaN and undefined
+			if (ele.id != undefined && ele.type == 'player') {
+				if (ele.pos.x != undefined && ele.pos.x != null && ele.pos.x != 'NaN') {
+					if (ele.pos.y != undefined && ele.pos.y != null && ele.pos.y != 'NaN') {
+						var offsetX = TLC.pos.x - ele.pos.x;
+						var offsetY = TLC.pos.y - ele.pos.y;
+						//ele.pos is going NaN and undefined
 
-					fill(0);
-					textSize(20);
-					text(`${offsetX}, ${offsetY}`, 10, 30);
+						fill(0);
+						textSize(20);
+						text(`${offsetX}, ${offsetY}`, 10, 30);
 
-					if (ele.color == undefined) {
-						ele.color = 'red';
+						if (ele.color == undefined) {
+							ele.color = 'red';
+						}
+
+						fill(ele.color);
+						rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT, UNIT);
+					} else {
+						//console.log(`ERROR: y ${ele.pos.y} is not a valid position`);
+						//console.log(ele);
 					}
-
-					fill(ele.color);
-					rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT, UNIT);
 				} else {
-					//console.log(`ERROR: y ${ele.pos.y} is not a valid position`);
-					//console.log(ele);
+					//console.log(`ERROR: x ${ele.pos.x} is not a valid position`);
 				}
-			} else {
-				//console.log(`ERROR: x ${ele.pos.x} is not a valid position`);
-			}
-		} else if (ele.type == 'wall') {
-			var offsetX = TLC.pos.x - ele.pos.x;
-			var offsetY = TLC.pos.y - ele.pos.y;
+			} else if (ele.type == 'wall') {
+				var offsetX = TLC.pos.x - ele.pos.x;
+				var offsetY = TLC.pos.y - ele.pos.y;
 
-			fill(ele.color);
-			rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT, UNIT);
-		} else {
-			entities = ArrayRemove(entities, ele);
-		}
-	});
+				fill(ele.color);
+				rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT, UNIT);
+			} else {
+				entities = ArrayRemove(entities, ele);
+			}
+		});
 	}
 
 	//draws walls and other non-player entities
@@ -412,7 +416,7 @@ function draw() {
 	}
 
 	//draws mouse crosshairs
-	if (menu == false) {
+	if (menu != undefined) {
 		fill(0);
 		rect(mouseX - 1, mouseY - UNIT / 2, 2, UNIT);//vertical
 		rect(mouseX - UNIT / 2, mouseY - 1, UNIT, 2);//horizontal
@@ -432,13 +436,6 @@ function draw() {
 		fill(0);
 		textSize(20);
 		text(`${mouseX}, ${mouseY}`, 10, 15);
-	}
-
-	if(menu == true){
-		//background('yellow');
-		fill(0);
-		textSize(20);
-		text(`${key}`, 111, 111);
 	}
 
 	mouseTurn();
@@ -468,26 +465,25 @@ function draw() {
 	function mouseTurn() {
 		let z = UNIT * 15 - mouseX;
 		let w = UNIT * 15 - mouseY;
-		let y;
-		let x;
+		//let y;
+		//let x;
 		if (mouseY > z) {
-			if (y <= mouseX && mouseX > (UNIT * 15) / 2) {
+			if (mouseY <= mouseX && mouseX > (UNIT * 15) / 2) {
 				player.direction = 'RIGHT';
-				console.log(y);
 			}
 		}
 		if (mouseY < z) {
-			if (y <= mouseX && mouseX < (UNIT * 15) / 2) {
+			if (mouseY >= mouseX && mouseX < (UNIT * 15) / 2) {
 				player.direction = 'LEFT';
 			}
 		}
 		if (mouseX < w) {
-			if (x <= mouseY && mouseY < (UNIT * 15) / 2) {
+			if (mouseX >= mouseY && mouseY < (UNIT * 15) / 2) {
 				player.direction = 'UP';
 			}
 		}
 		if (mouseX > w) {
-			if (x <= mouseY && mouseY > (UNIT * 15) / 2) {
+			if (mouseX <= mouseY && mouseY > (UNIT * 15) / 2) {
 				player.direction = 'DOWN';
 			}
 		}
@@ -614,9 +610,6 @@ function draw() {
 		}
 	}
 
-	//button
-	rect(bx, by, boxSize, boxSize);
-
 	thing = TLC;
 
 	playerMoved();
@@ -632,12 +625,12 @@ function mousePressed() {
 	}
 }
 
-function keyReleased(){
-	if(key === 'p'){
-		if(menu == false){
-			menu = true;
-		}else{
-			menu = false;
+function keyReleased() {
+	if (key === 'p') {
+		if (menu == false) {
+			//menu = true;
+		} else {
+			//menu = false;
 		}
 	}
 	return false;
