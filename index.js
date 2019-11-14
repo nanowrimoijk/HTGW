@@ -36,4 +36,16 @@ function newConnection(socket) {
 	function moveMsg(data) {
 		socket.broadcast.emit('move', data);
 	}
+
+	socket.on('attack', Attack);
+
+	function Attack(data){
+		socket.broadcast.emit('attack', data);
+	}
+
+	socket.on('bulletHit', healthLower);
+
+	function healthLower(data){
+		socket.broadcast.emit('bulletHit', data);
+	}
 }
