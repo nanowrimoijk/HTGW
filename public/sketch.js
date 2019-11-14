@@ -94,7 +94,13 @@ let levels = {
 		],
 	},
 	prologue: {
-
+		hall: {
+			UNIT: 32, 
+			HEIGHT: 15, 
+			WIDTH: 15, 
+			walls: [], 
+			back: 300, 
+		}, 
 	}, 
 	chapter1: {
 		tutorial: {
@@ -102,8 +108,6 @@ let levels = {
 				UNIT: 32,
 				HEIGHT: 15,
 				WIDTH: 15,
-				BOXH: 2,
-				BOXW: 2,
 				walls: [
 					{
 						name: 'NPC0-BR', 
@@ -138,6 +142,7 @@ let levels = {
 						HP: 300, 
 					},
 				],
+				back: 230, 
 			}, 
 		}, 
 	}, 
@@ -157,22 +162,16 @@ function ArrayRemove(arr, value) {
 let screenWidth = 480;
 let screenHeight = 480;
 
-let devTools = false; //default: false
-let menus = {
-	main: false, //default: true
-	pause: false, //default: false
-	dead: false, //default: false (I mean, I hope you dont die right away)
-	quest: false, 
-}
-let menu = false; //default: true
-let currentStage = levels.chapter1.tutorial.lv1;
+let menu = false; //default: 'main'
+let devTools = false
+let currentStage = levels.prologue.hall;
 let entities;
 
 UNIT = currentStage.UNIT;
 const WIDTH = currentStage.WIDTH;
 const HEIGHT = currentStage.HEIGHT;
-const BOXW = currentStage.BOXW;
-const BOXH = currentStage.BOXH;
+const BOXW = 2;
+const BOXH = 2;
 let X = player.pos.x;
 let Y = player.pos.y;
 
@@ -553,8 +552,7 @@ function lowerHealth(data) {
 	if (data.id == socket.id) {
 		player.HP -= data.dmg;
 		if (player.HP <= 0) {
-			menu = true;
-			menus.dead = true;
+			menu = 'dead';
 			socket.disconnect();
 		}
 	}
@@ -564,24 +562,25 @@ function lowerHealth(data) {
 function draw() {
 	clear();
 	createCanvas(screenWidth, screenHeight);
+	background(currentStage.back);
 
 	var TLC = thing;
 
 	//quest menu
-	if(menus.quest == true){
+	if(menu == 'quest'){
 		background(100);
 	}
 
 	//shows death screen
-	if (menus.dead == true) {
+	if (menu == 'dead') {
 		background(0);
 		fill(250);
 		textSize(60);
-		text('You menus.dead', 110, 200);
+		text('You dead', 110, 200);
 	}
 
 	//draws the main menu
-	if (menus.main == true && menu == true) {
+	if (menu == 'main') {
 		background('#700CE8');
 		fill('#FF2200');
 		rect(15 * UNIT / 3, 0, 15 * UNIT / 3, 500);
@@ -609,7 +608,7 @@ function draw() {
 	}
 
 	//pause menu
-	if (menus.pause == true && menu == true) {
+	if (menu == 'pause') {
 		background('#55DEFF');
 
 		//devTools buttons
@@ -788,7 +787,7 @@ function draw() {
 
 	//draws mouse crosshairs
 	if (menu != undefined) {
-		if(menus.dead == true){
+		if(menu == 'dead'){
 			fill('white');
 		}else{
 			fill(0);
@@ -1152,7 +1151,7 @@ function draw() {
 
 function mousePressed() {
 	//text test button
-	if (mouseX > buttons.text_test.x + buttons.text_test.width - 64 && mouseX < buttons.text_test.x + buttons.text_test.width && mouseY > buttons.text_test.y - buttons.text_test.height + 64 && mouseY < buttons.text_test.y + buttons.text_test.height && menus.pause == true) {
+	if (mouseX > buttons.text_test.x + buttons.text_test.width - 64 && mouseX < buttons.text_test.x + buttons.text_test.width && mouseY > buttons.text_test.y - buttons.text_test.height + 64 && mouseY < buttons.text_test.y + buttons.text_test.height && menu == 'pause') {
 		if (textBox == undefined) {
 			textBox = messages.test;
 		} else if (textBox == messages.test) {
@@ -1166,7 +1165,7 @@ function mousePressed() {
 	}
 
 	//devTools button
-	if (mouseX > buttons.devTools.x + buttons.devTools.width - 64 && mouseX < buttons.devTools.x + buttons.devTools.width && mouseY > buttons.devTools.y - buttons.devTools.height + 64 && mouseY < buttons.devTools.y + buttons.devTools.height && menus.pause == true) {
+	if (mouseX > buttons.devTools.x + buttons.devTools.width - 64 && mouseX < buttons.devTools.x + buttons.devTools.width && mouseY > buttons.devTools.y - buttons.devTools.height + 64 && mouseY < buttons.devTools.y + buttons.devTools.height && menu == 'pause') {
 		if (devTools == true) {
 			devTools = false;
 		} else if (devTools == false) {
@@ -1175,7 +1174,7 @@ function mousePressed() {
 	}
 
 	//move input button
-	if (mouseX > buttons.moveInput.x + buttons.moveInput.width - 64 && mouseX < buttons.moveInput.x + buttons.moveInput.width && mouseY > buttons.moveInput.y - buttons.moveInput.height + 64 && mouseY < buttons.moveInput.y + buttons.moveInput.height && menus.pause == true) {
+	if (mouseX > buttons.moveInput.x + buttons.moveInput.width - 64 && mouseX < buttons.moveInput.x + buttons.moveInput.width && mouseY > buttons.moveInput.y - buttons.moveInput.height + 64 && mouseY < buttons.moveInput.y + buttons.moveInput.height && menu == 'pause') {
 		if (arrowKeys == true) {
 			arrowKeys = false;
 			WASD = true;
@@ -1187,8 +1186,7 @@ function mousePressed() {
 
 	//quest button
 	if (mouseX > buttons.quest.x + buttons.quest.width - 128 && mouseX < buttons.quest.x + buttons.quest.width && mouseY > buttons.quest.y - buttons.quest.height - 128 && mouseY < buttons.quest.y + buttons.quest.height && menu == false){
-		menu = true;
-		menus.quest = true;
+		menu = 'quest';
 	}
 }
 
@@ -1237,24 +1235,20 @@ function mouseReleased() {
 
 function keyReleased() {
 	//pause menu
-	if (key === 'p' && menus.main == false && menus.quest == false) {
-		if (menus.pause == false && menu == false) {
-			menu = true;
-			menus.pause = true;
+	if (key === 'p' && menu != 'main' && menu != 'quest') {
+		if (menu == false) {
+			menu = 'pause';
 		} else {
 			menu = false;
-			menus.pause = false;
 		}
 	}
 
 	//quest menu
-	if(key == 'q' && menus.main == false && menus.pause == false){
-		if(menus.quest == false && menu == false){
-			menu = true;
-			menus.quest = true;
+	if(key == 'q' && menu != 'main' && menu != 'pause'){
+		if(menu == false){
+			menu = 'quest';
 		}else{
 			menu = false;
-			menus.quest = false;
 		}
 	}
 
