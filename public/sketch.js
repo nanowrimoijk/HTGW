@@ -3,66 +3,66 @@ let socket;
 let weapons = {
 	lunarshot: {
 		Hytex: {
-			dmg: 27, 
+			dmg: 27,
 			energy: 25,
 			max_charge: 60,
 			range: 4.5,
-			type: 'charger', 
+			type: 'charger',
 		},
 		Lunarian: {
-			dmg: 25, 
-			energy: 20, 
-			max_charge: 70, 
-			range: 5, 
-			type: 'charger', 
-		}, 
+			dmg: 25,
+			energy: 20,
+			max_charge: 70,
+			range: 5,
+			type: 'charger',
+		},
 		Hurricane: {
-			dmg: 22, 
-			energy: 20, 
-			max_charge: 70, 
-			range: 6, 
-			type: 'charger', 
+			dmg: 22,
+			energy: 20,
+			max_charge: 70,
+			range: 6,
+			type: 'charger',
 		}
 	},
 	atlas: {
 		Hytex: {
-			dmg: 20, 
-			energy: 15, 
-			max_charge: 85, 
-			range: 3.5, 
-			type: 'charger', 
-		}, 
+			dmg: 20,
+			energy: 15,
+			max_charge: 85,
+			range: 3.5,
+			type: 'charger',
+		},
 		Hurricane: {
-			dmg: 17, 
-			energy: 20, 
-			max_charge: 95, 
-			range: 5, 
-			type: 'charger', 
-		}, 
+			dmg: 17,
+			energy: 20,
+			max_charge: 95,
+			range: 5,
+			type: 'charger',
+		},
 		Lunthorium: {
-			dmg: 17, 
-			energy: 20, 
-			max_charge: 85, 
-			range: 6.5, 
-			type: 'charger', 
-		}, 
-	}, 
+			dmg: 17,
+			energy: 20,
+			max_charge: 85,
+			range: 6.5,
+			type: 'charger',
+		},
+	},
 	exo: {
 		Hytex: {
-			dmg: 30, 
-			energy: 35, 
-			max_charge: 65, 
-			range: 6, 
-			type: 'charger', 
-		}, 
+			dmg: 30,
+			energy: 35,
+			max_charge: 65,
+			range: 6,
+			type: 'charger',
+		},
 		Linthorium: {
-			dmg: 37, 
-			energy: 35, 
-			max_charge: 60, 
-			range: 7, 
-			type: 'charger', 
-		}, 
-	}, 
+			dmg: 37,
+			energy: 35,
+			max_charge: 60,
+			range: 7,
+			type: 'charger',
+		},
+	},
 }
 
 var player = {
@@ -95,13 +95,13 @@ let levels = {
 	},
 	prologue: {
 		hall: {
-			UNIT: 32, 
-			HEIGHT: 15, 
-			WIDTH: 15, 
-			walls: [], 
-			back: 300, 
-		}, 
-	}, 
+			UNIT: 32,
+			HEIGHT: 15,
+			WIDTH: 15,
+			walls: [],
+			back: 300,
+		},
+	},
 	chapter1: {
 		tutorial: {
 			lv1: {
@@ -110,42 +110,42 @@ let levels = {
 				WIDTH: 15,
 				walls: [
 					{
-						name: 'NPC0-BR', 
-						id: 'NPC0', 
+						name: 'NPC0-BR',
+						id: 'NPC0',
 						type: 'NPC',
 						pos: { x: 7, y: 5 },
 						color: 'red',
-						HP: 300, 
+						HP: 300,
 					},
 					{
-						name: 'NPC0-BL', 
-						id: 'NPC0', 
+						name: 'NPC0-BL',
+						id: 'NPC0',
 						type: 'NPC',
 						pos: { x: 6, y: 5 },
 						color: 'red',
-						HP: 300, 
+						HP: 300,
 					},
 					{
-						name: 'NPC0-TR', 
-						id: 'NPC0', 
+						name: 'NPC0-TR',
+						id: 'NPC0',
 						type: 'NPC',
 						pos: { x: 7, y: 4 },
 						color: 'red',
-						HP: 300, 
+						HP: 300,
 					},
 					{
-						name: 'NPC0-TL', 
-						id: 'NPC0', 
+						name: 'NPC0-TL',
+						id: 'NPC0',
 						type: 'NPC',
 						pos: { x: 6, y: 4 },
 						color: 'red',
-						HP: 300, 
+						HP: 300,
 					},
 				],
-				back: 230, 
-			}, 
-		}, 
-	}, 
+				back: 230,
+			},
+		},
+	},
 }
 
 function Random(max) {
@@ -189,15 +189,15 @@ let messages = {
 	chapter1: {
 		tutorial: {
 			msg1: {
-				author: 'Chris', 
-				message: "Really Adom? This is the best you could find?", 
-			}, 
+				author: 'Chris',
+				message: "Really Adom? This is the best you could find?",
+			},
 			msg2: {
-				author: 'Adom', 
-				message: "", 
-			}, 
-		}, 
-	}, 
+				author: 'Adom',
+				message: "",
+			},
+		},
+	},
 }
 let textBox = undefined;
 
@@ -234,11 +234,11 @@ let buttons = {
 		text_size: 30,
 	},
 	quest: {
-		x: 445, 
-		y: 35, 
-		width: 60, 
-		height: 60, 
-	}, 
+		x: 445,
+		y: 35,
+		width: 60,
+		height: 60,
+	},
 };
 
 let charge = 0;
@@ -511,38 +511,38 @@ function newAttack(data) {
 	let x;
 	let y;
 
-	entities.forEach(function(ele){
-		if(ele.id == data.id){
-			x = TLC.pos.x + ele.pos.x; 
+	entities.forEach(function(ele) {
+		if (ele.id == data.id) {
+			x = TLC.pos.x + ele.pos.x;
 			y = TLC.pos.y + ele.pos.y;
 		}
 	});
 
-	switch(data.direction){
-				case 'UP': 
-					y -= 2;
-					break;
-				case 'DOWN': 
-					x -= 1;
-					y += 1;
-					break;
-				case 'RIGHT': 
-					x += 1;
-					break;
-				case 'LEFT': 
-					x -= 2;
-					y -= 1;
-			}
+	switch (data.direction) {
+		case 'UP':
+			y -= 2;
+			break;
+		case 'DOWN':
+			x -= 1;
+			y += 1;
+			break;
+		case 'RIGHT':
+			x += 1;
+			break;
+		case 'LEFT':
+			x -= 2;
+			y -= 1;
+	}
 
 	let Data = {
-		dmg: data.dmg, 
-		id: data.id, 
-		direction: data.direction, 
+		dmg: data.dmg,
+		id: data.id,
+		direction: data.direction,
 		pos: {
-			x: x, 
-			y: y, 
-		}, 
-		type: data.type, 
+			x: x,
+			y: y,
+		},
+		type: data.type,
 	}
 	entities.push(Data);
 }
@@ -567,7 +567,7 @@ function draw() {
 	var TLC = thing;
 
 	//quest menu
-	if(menu == 'quest'){
+	if (menu == 'quest') {
 		background(100);
 	}
 
@@ -709,7 +709,7 @@ function draw() {
 				fill(0);
 				rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT, UNIT);
 
-			}else if(ele.type == 'NPC'){
+			} else if (ele.type == 'NPC') {
 				var offsetX = TLC.pos.x - ele.pos.x;
 				var offsetY = TLC.pos.y - ele.pos.y;
 
@@ -787,9 +787,9 @@ function draw() {
 
 	//draws mouse crosshairs
 	if (menu != undefined) {
-		if(menu == 'dead'){
+		if (menu == 'dead') {
 			fill('white');
-		}else{
+		} else {
 			fill(0);
 		}
 		rect(mouseX - 1, mouseY - UNIT / 2, 2, UNIT);//vertical
@@ -873,10 +873,12 @@ function draw() {
 	//checks for collisions with objects in  the entities array
 	function Colide(dir) {
 		for (let i of entities) {
-			if (dir == "RIGHT" && X + 1 == i.pos.x && Y >= i.pos.y && Y - BOXH < i.pos.y) return true;
-			if (dir == "DOWN" && Y + 1 == i.pos.y && X >= i.pos.x && X - BOXW < i.pos.x) return true;
-			if (dir == "UP" && Y - BOXH == i.pos.y && X >= i.pos.x && X - BOXW < i.pos.x) return true;
-			if (dir == "LEFT" && X - BOXW == i.pos.x && Y >= i.pos.y && Y - BOXH < i.pos.y) return true;
+			if (i.type == 'wall' || i.type == 'player') {
+				if (dir == "RIGHT" && X + 1 == i.pos.x && Y >= i.pos.y && Y - BOXH < i.pos.y) return true;
+				if (dir == "DOWN" && Y + 1 == i.pos.y && X >= i.pos.x && X - BOXW < i.pos.x) return true;
+				if (dir == "UP" && Y - BOXH == i.pos.y && X >= i.pos.x && X - BOXW < i.pos.x) return true;
+				if (dir == "LEFT" && X - BOXW == i.pos.x && Y >= i.pos.y && Y - BOXH < i.pos.y) return true;
+			}
 		}
 		return false
 	}
@@ -905,11 +907,11 @@ function draw() {
 									entities = ArrayRemove(entities, ele);
 								} else if (elem.type == 'wall') {
 									entities = ArrayRemove(entities, ele);
-								} else if(elem.type == 'NPC'){
+								} else if (elem.type == 'NPC') {
 									elem.HP -= ele.dmg;
-									if(elem.HP <= 0){
-										entities.forEach(function(eleme){
-											if(eleme.id == elem.id){
+									if (elem.HP <= 0) {
+										entities.forEach(function(eleme) {
+											if (eleme.id == elem.id) {
 												entities = ArrayRemove(entities, eleme);
 											}
 										});
@@ -939,11 +941,11 @@ function draw() {
 									entities = ArrayRemove(entities, ele);
 								} else if (elem.type == 'wall') {
 									entities = ArrayRemove(entities, ele);
-								} else if(elem.type == 'NPC'){
+								} else if (elem.type == 'NPC') {
 									elem.HP -= ele.dmg;
-									if(elem.HP <= 0){
-										entities.forEach(function(eleme){
-											if(eleme.id == elem.id){
+									if (elem.HP <= 0) {
+										entities.forEach(function(eleme) {
+											if (eleme.id == elem.id) {
 												entities = ArrayRemove(entities, eleme);
 											}
 										});
@@ -973,11 +975,11 @@ function draw() {
 									entities = ArrayRemove(entities, ele);
 								} else if (elem.type == 'wall') {
 									entities = ArrayRemove(entities, ele);
-								} else if(elem.type == 'NPC'){
+								} else if (elem.type == 'NPC') {
 									elem.HP -= ele.dmg;
-									if(elem.HP <= 0){
-										entities.forEach(function(eleme){
-											if(eleme.id == elem.id){
+									if (elem.HP <= 0) {
+										entities.forEach(function(eleme) {
+											if (eleme.id == elem.id) {
 												entities = ArrayRemove(entities, eleme);
 											}
 										});
@@ -1007,11 +1009,11 @@ function draw() {
 									entities = ArrayRemove(entities, ele);
 								} else if (elem.type == 'wall') {
 									entities = ArrayRemove(entities, ele);
-								} else if(elem.type == 'NPC'){
+								} else if (elem.type == 'NPC') {
 									elem.HP -= ele.dmg;
-									if(elem.HP <= 0){
-										entities.forEach(function(eleme){
-											if(eleme.id == elem.id){
+									if (elem.HP <= 0) {
+										entities.forEach(function(eleme) {
+											if (eleme.id == elem.id) {
 												entities = ArrayRemove(entities, eleme);
 											}
 										});
@@ -1185,7 +1187,7 @@ function mousePressed() {
 	}
 
 	//quest button
-	if (mouseX > buttons.quest.x + buttons.quest.width - 128 && mouseX < buttons.quest.x + buttons.quest.width && mouseY > buttons.quest.y - buttons.quest.height - 128 && mouseY < buttons.quest.y + buttons.quest.height && menu == false){
+	if (mouseX > buttons.quest.x + buttons.quest.width - 128 && mouseX < buttons.quest.x + buttons.quest.width && mouseY > buttons.quest.y - buttons.quest.height - 128 && mouseY < buttons.quest.y + buttons.quest.height && menu == false) {
 		menu = 'quest';
 	}
 }
@@ -1194,7 +1196,7 @@ function mouseReleased() {
 	let TLC = thing;
 
 	if (menu == false) {
-		let xx = TLC.pos.x + player.pos.x; 
+		let xx = TLC.pos.x + player.pos.x;
 		let yy = TLC.pos.y + player.pos.y;
 
 		let x;
@@ -1244,10 +1246,10 @@ function keyReleased() {
 	}
 
 	//quest menu
-	if(key == 'q' && menu != 'main' && menu != 'pause'){
-		if(menu == false){
+	if (key == 'q' && menu != 'main' && menu != 'pause') {
+		if (menu == false) {
 			menu = 'quest';
-		}else{
+		} else {
 			menu = false;
 		}
 	}
@@ -1261,7 +1263,7 @@ function keyReleased() {
 		}
 	}
 
-	if(key == 'o'){
+	if (key == 'o') {
 		screenHeight = 600;
 		screenWidth = 750;
 	}
