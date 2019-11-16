@@ -65,6 +65,345 @@ let weapons = {
 	},
 }
 
+let borders = {
+	x16: [
+		//top wall
+		{
+			type: 'wall',
+			pos: { x: 0, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 1, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 2, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 3, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 4, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 5, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 6, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 7, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 8, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 9, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 10, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 11, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 12, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 13, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 14, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 15, y: 0 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 0 },
+			color: 'grey',
+		},
+		//left wall
+		{
+			type: 'wall',
+			pos: { x: 0, y: 1 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 2 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 3 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 4 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 5 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 6 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 7 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 8 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 9 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 10 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 11 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 12 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 13 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 14 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 15 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 0, y: 16 },
+			color: 'grey',
+		},
+		// right wall
+		{
+			type: 'wall',
+			pos: { x: 16, y: 1 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 2 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 3 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 4 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 5 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 6 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 7 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 8 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 9 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 10 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 11 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 12 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 13 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 14 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 15 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 16 },
+			color: 'grey',
+		},
+		//bottom wall
+		{
+			type: 'wall',
+			pos: { x: 0, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 1, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 2, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 3, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 4, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 5, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 6, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 7, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 8, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 9, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 10, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 11, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 12, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 13, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 14, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 15, y: 16 },
+			color: 'grey',
+		},
+		{
+			type: 'wall',
+			pos: { x: 16, y: 16 },
+			color: 'grey',
+		},
+	],
+}
+
 var player = {
 	type: 'player',
 	pos: { x: 7, y: 7 },
@@ -80,24 +419,32 @@ var player = {
 // all levels go in here
 let levels = {
 	test: {
+		name: 'test', 
 		UNIT: 32,
-		HEIGHT: 21,
+		HEIGHT: 16,
 		WIDTH: 16,
 		BOXH: 2,
 		BOXW: 2,
 		walls: [
 			{
-				type: 'wall',
-				pos: { x: 5, y: 5 },
-				color: 'grey',
+				name: "Chris's office",
+				type: 'door',
+				pos: {
+					x: 7,
+					y: 1,
+				},
+				color: 'green',
 			},
 		],
+		border: borders.x16,
+		back: 220,
 	},
 	prologue: {
 		hall: {
+			name: 'hall', 
 			UNIT: 32,
-			HEIGHT: 15,
-			WIDTH: 15,
+			HEIGHT: 16,
+			WIDTH: 10,
 			walls: [],
 			back: 300,
 		},
@@ -106,8 +453,8 @@ let levels = {
 		tutorial: {
 			lv1: {
 				UNIT: 32,
-				HEIGHT: 15,
-				WIDTH: 15,
+				HEIGHT: 16,
+				WIDTH: 16,
 				walls: [
 					{
 						name: 'NPC0-BR',
@@ -164,16 +511,18 @@ let screenHeight = 480;
 
 let menu = false; //default: 'main'
 let devTools = false
-let currentStage = levels.prologue.hall;
+let currentStage = levels.test;
 let entities;
 
 UNIT = currentStage.UNIT;
-const WIDTH = currentStage.WIDTH;
-const HEIGHT = currentStage.HEIGHT;
+let WIDTH = currentStage.WIDTH;
+let HEIGHT = currentStage.HEIGHT;
 const BOXW = 2;
 const BOXH = 2;
 let X = player.pos.x;
 let Y = player.pos.y;
+
+let stageChanged = true;
 
 const online = true; //default: true
 var playerList = [];
@@ -241,6 +590,15 @@ let buttons = {
 	},
 };
 
+let doors = [
+	chris_office = {
+		x: 7,
+		y: 2,
+		room: levels.test,
+		target: levels.prologue.hall,
+	},
+];
+
 let charge = 0;
 
 
@@ -248,44 +606,59 @@ var thing = {
 	pos: { x: player.pos.x - 7, y: player.pos.y - 7 },
 }
 
+
+function Teleport() {
+	doors.forEach(function(ele) {
+		if (currentStage == ele.room) {
+			if(player.pos.x == ele.x){
+				if(player.pos.y == ele.y){
+					currentStage = ele.target;
+					stageChanged = true;
+				}
+			}
+		}
+	});
+}
+
+
 function setup() {
 	//createCanvas(15 * UNIT, 15 * UNIT);
 	noCursor();
 
 	entities = currentStage.walls;
-
-	//south boundaries
-	for (let i = 0; i < currentStage.WIDTH + 1; i++) {
-		entities.push({
-			type: 'wall',
-			pos: { x: i, y: HEIGHT },
-			color: 'grey',
-		});
-	}
-	//east boundaries
-	for (let i = 0; i < currentStage.HEIGHT; i++) {
-		entities.push({
-			type: 'wall',
-			pos: { x: WIDTH, y: i },
-			color: 'grey',
-		});
-	}
-	//north boundaries
-	for (let i = 0; i < currentStage.WIDTH; i++) {
-		entities.push({
-			type: 'wall',
-			pos: { x: i, y: 0 },
-			color: 'grey',
-		});
-	}
-	//west boundaries
-	for (let i = 0; i < currentStage.HEIGHT; i++) {
-		entities.push({
-			type: 'wall',
-			pos: { x: 0, y: i },
-			color: 'grey',
-		});
-	}
+	/*
+		//south boundaries
+		for (let i = 0; i < currentStage.WIDTH + 1; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: i, y: HEIGHT },
+				color: 'grey',
+			});
+		}
+		//east boundaries
+		for (let i = 0; i < currentStage.HEIGHT; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: WIDTH, y: i },
+				color: 'grey',
+			});
+		}
+		//north boundaries
+		for (let i = 0; i < currentStage.WIDTH; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: i, y: 0 },
+				color: 'grey',
+			});
+		}
+		//west boundaries
+		for (let i = 0; i < currentStage.HEIGHT; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: 0, y: i },
+				color: 'grey',
+			});
+		}*/
 
 	socket = io();
 
@@ -563,6 +936,47 @@ function draw() {
 	clear();
 	createCanvas(screenWidth, screenHeight);
 	background(currentStage.back);
+	if (stageChanged == true) {
+		entities = currentStage.walls;
+		/*currentStage.border.forEach(function(ele) {
+			entities.push(ele);
+		});*/
+
+		//bottom boundaries
+		for (let i = 0; i <= currentStage.WIDTH; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: i, y: currentStage.HEIGHT },
+				color: 'grey',
+			});
+		}
+		//right boundaries
+		for (let i = 0; i <= currentStage.HEIGHT; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: currentStage.WIDTH, y: i },
+				color: 'grey',
+			});
+		}
+		//top boundaries
+		for (let i = 0; i <= currentStage.WIDTH; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: i, y: 0 },
+				color: 'grey',
+			});
+		}
+		//left boundaries
+		for (let i = 0; i <= currentStage.HEIGHT; i++) {
+			entities.push({
+				type: 'wall',
+				pos: { x: 0, y: i },
+				color: 'grey',
+			});
+		}
+
+		stageChanged = false;
+	}
 
 	var TLC = thing;
 
@@ -715,8 +1129,16 @@ function draw() {
 
 				fill(ele.color);
 				rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT, UNIT);
+
+			} else if (ele.type == 'door') {
+				var offsetX = TLC.pos.x - ele.pos.x;
+				var offsetY = TLC.pos.y - ele.pos.y;
+
+				fill(ele.color);
+				rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT * 2, UNIT * 2);
+
 			} else {
-				console.log(`deleted ${ele}`);//--------------------------->>>>>>>>>
+				console.log(`deleted ${ele}`);
 				entities = ArrayRemove(entities, ele);
 			}
 		});
@@ -788,7 +1210,7 @@ function draw() {
 	//draws mouse crosshairs
 	if (menu != undefined) {
 		if (menu == 'dead') {
-			fill('white');
+			fill(300);
 		} else {
 			fill(0);
 		}
@@ -798,11 +1220,11 @@ function draw() {
 
 	//shows grid for development
 	if (devTools == true && menu == false) {
-		for (y = 0; y < HEIGHT; y++) {
-			line(0, UNIT * y, WIDTH * UNIT, UNIT * y);
+		for (y = 0; y < screenHeight; y++) {
+			line(0, UNIT * y, screenWidth * UNIT, UNIT * y);
 		}
-		for (x = 0; x < WIDTH; x++) {
-			line(UNIT * x, 0, UNIT * x, HEIGHT * UNIT);
+		for (x = 0; x < screenWidth; x++) {
+			line(UNIT * x, 0, UNIT * x, screenHeight * UNIT);
 		}
 		line(0, 0, 15 * UNIT, 15 * UNIT);
 		line(15 * UNIT, 0, 0, 15 * UNIT);
@@ -820,6 +1242,7 @@ function draw() {
 	}
 
 	mouseTurn();
+	Teleport();
 
 	//checks for if a player is turning and then changes it's graphics
 	function playerTurn(x, y, object) {
@@ -873,7 +1296,7 @@ function draw() {
 	//checks for collisions with objects in  the entities array
 	function Colide(dir) {
 		for (let i of entities) {
-			if (i.type == 'wall' || i.type == 'player') {
+			if (i.type == 'wall' || i.type == 'player' || i.type == 'NPC') {
 				if (dir == "RIGHT" && X + 1 == i.pos.x && Y >= i.pos.y && Y - BOXH < i.pos.y) return true;
 				if (dir == "DOWN" && Y + 1 == i.pos.y && X >= i.pos.x && X - BOXW < i.pos.x) return true;
 				if (dir == "UP" && Y - BOXH == i.pos.y && X >= i.pos.x && X - BOXW < i.pos.x) return true;
