@@ -81,38 +81,41 @@ var player = {
 let levels = {
 	test: {
 		name: 'test', 
-		UNIT: 32,
 		HEIGHT: 16,
 		WIDTH: 16,
-		BOXH: 2,
-		BOXW: 2,
-		walls: [
-			{
-				name: "Chris's office",
-				type: 'door',
-				pos: {
-					x: 7,
-					y: 1,
-				},
-				color: 'green',
-			},
-		],
+		walls: [],
 		back: 220,
 	},
 	prologue: {
 		hall: {
 			name: 'hall', 
-			UNIT: 32,
 			HEIGHT: 16,
-			WIDTH: 10,
-			walls: [],
+			WIDTH: 11,
+			walls: [
+				{
+				name: "Chris's office",
+				type: 'door',
+				pos: {
+					x: 5,
+					y: 1,
+				},
+				color: 'green',
+			},
+			],
 			back: 300,
 		},
+		office: {
+			name: "Chris's office", 
+			HEIGHT: 16, 
+			WIDTH: 16, 
+			walls: [], 
+			back: 300, 
+		}, 
 	},
 	chapter1: {
 		tutorial: {
 			lv1: {
-				UNIT: 32,
+				name: "Tutorial level 1", 
 				HEIGHT: 16,
 				WIDTH: 16,
 				walls: [
@@ -166,15 +169,15 @@ function ArrayRemove(arr, value) {
 	//Array = ArrayRemove(Array, "food");
 }
 
-let screenWidth = 480;
-let screenHeight = 480;
+let screenWidth = 480; //default: 480
+let screenHeight = 480; //default: 480
 
 let menu = false; //default: 'main'
-let devTools = false
-let currentStage = levels.test;
+let devTools = false //default: false
+let currentStage = levels.prologue.hall; //default: levels.prologue.hall
 let entities;
 
-UNIT = currentStage.UNIT;
+UNIT = 32;
 let WIDTH = currentStage.WIDTH;
 let HEIGHT = currentStage.HEIGHT;
 const BOXW = 2;
@@ -182,13 +185,13 @@ const BOXH = 2;
 let X = player.pos.x;
 let Y = player.pos.y;
 
-let stageChanged = true;
+let stageChanged = true; //default: true
 
 const online = true; //default: true
 var playerList = [];
 var chat = [];
-var WASD = true;
-var arrowKeys = false;
+var WASD = true; //default: true
+var arrowKeys = false; //default: false
 var keys = [];
 
 let messages = {
@@ -252,10 +255,12 @@ let buttons = {
 
 let doors = [
 	chris_office = {
-		x: 7,
+		x: 6,
 		y: 2,
-		room: levels.test,
-		target: levels.prologue.hall,
+		room: levels.prologue.hall,
+		target: levels.prologue.office,
+		Sx: 7, 
+		Sy: 10, 
 	},
 ];
 
@@ -267,58 +272,33 @@ var thing = {
 }
 
 
-function Teleport() {
+//checks player's courdinates and teleports player to correct room
+function checkDoors() {
 	doors.forEach(function(ele) {
 		if (currentStage == ele.room) {
 			if(player.pos.x == ele.x){
 				if(player.pos.y == ele.y){
 					currentStage = ele.target;
 					stageChanged = true;
+					player.pos.x = ele.Sx;
+					player.pos.y = ele.Sy;
 				}
 			}
 		}
 	});
 }
 
+//teleports player to a room at certain courdinates
+function teleport(room, x, y){
+	currentStage = room;
+	player.pos.x = x;
+	player.pos.y = y;
+	stageChanged = true;
+}
+
 
 function setup() {
-	//createCanvas(15 * UNIT, 15 * UNIT);
 	noCursor();
-
-	entities = currentStage.walls;
-	/*
-		//south boundaries
-		for (let i = 0; i < currentStage.WIDTH + 1; i++) {
-			entities.push({
-				type: 'wall',
-				pos: { x: i, y: HEIGHT },
-				color: 'grey',
-			});
-		}
-		//east boundaries
-		for (let i = 0; i < currentStage.HEIGHT; i++) {
-			entities.push({
-				type: 'wall',
-				pos: { x: WIDTH, y: i },
-				color: 'grey',
-			});
-		}
-		//north boundaries
-		for (let i = 0; i < currentStage.WIDTH; i++) {
-			entities.push({
-				type: 'wall',
-				pos: { x: i, y: 0 },
-				color: 'grey',
-			});
-		}
-		//west boundaries
-		for (let i = 0; i < currentStage.HEIGHT; i++) {
-			entities.push({
-				type: 'wall',
-				pos: { x: 0, y: i },
-				color: 'grey',
-			});
-		}*/
 
 	socket = io();
 
@@ -639,7 +619,11 @@ function draw() {
 
 	//quest menu
 	if (menu == 'quest') {
-		background(100);
+		background(140);
+
+		fill(0);
+		textSize(30);
+		text("Nothing yet!", 150, 200);
 	}
 
 	//shows death screen
@@ -899,7 +883,7 @@ function draw() {
 	}
 
 	mouseTurn();
-	Teleport();
+	checkDoors();
 
 	//checks for if a player is turning and then changes it's graphics
 	function playerTurn(x, y, object) {
