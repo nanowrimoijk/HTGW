@@ -73,7 +73,7 @@ var player = {
 	PM: 'P',
 	xy: 'x',
 	HP: 300,
-	weapon: weapons.exo.Linthorium,
+	weapon: undefined,
 	energy: 5000,
 }
 
@@ -85,6 +85,8 @@ let levels = {
 		WIDTH: 16,
 		walls: [],
 		back: 220,
+		Sx: 0, 
+		Sy: 0, 
 	},
 	prologue: {
 		hall: {
@@ -101,8 +103,19 @@ let levels = {
 					},
 					color: 'green',
 				},
+				{
+					name: "Adom", 
+					type: 'NPC', 
+					pos: {
+						x: 5, 
+						y: 7, 
+					}, 
+					color: 'blue', 
+				}, 
 			],
 			back: 300,
+			Sx: 2, 
+			Sy: 0, 
 		},
 		office: {
 			name: "Chris's office",
@@ -110,6 +123,8 @@ let levels = {
 			WIDTH: 16,
 			walls: [],
 			back: 300,
+			Sx: 0, 
+			Sy: 8, 
 		},
 	},
 	chapter1: {
@@ -153,6 +168,8 @@ let levels = {
 					},
 				],
 				back: 230,
+				Sx: 0, 
+				Sy: 0, 
 			},
 		},
 	},
@@ -196,8 +213,15 @@ var keys = [];
 
 let messages = {
 	test: {
-		message: "this is a test",
+		author: "Nanowrimoijk", 
+		message: "It would be cool if somebody went out of their way to \nfind this!",
 	},
+	prologue: {
+		msg1: {
+			author: 'Adom', 
+			message: "Now, she may seem intimidating or rude, but I \npromise you she won't hurt you."
+		}, 
+	}, 
 	chapter1: {
 		tutorial: {
 			msg1: {
@@ -255,8 +279,9 @@ let buttons = {
 
 let doors = [
 	chris_office = {
-		x: 6,
-		y: 2,
+		name: "Chris's office", 
+		x: 5, 
+		y: 1,
 		room: levels.prologue.hall,
 		target: levels.prologue.office,
 	},
@@ -276,7 +301,7 @@ var thing = {
 }
 
 
-//checks player's courdinates and teleports player to correct room
+//checks player's cordinates and teleports player to correct room
 function checkDoors() {
 	doors.forEach(function(ele) {
 		if (currentStage == ele.room) {
@@ -288,14 +313,6 @@ function checkDoors() {
 			}
 		}
 	});
-}
-
-//teleports player to a room at certain courdinates
-function teleport(room, x, y) {
-	currentStage = room;
-	player.pos.x = x;
-	player.pos.y = y;
-	stageChanged = true;
 }
 
 //moves entities when the player moves
@@ -330,6 +347,10 @@ function entitiesMove(pos, PM) {
 			}
 		}
 	});
+}
+
+function start(){
+	textBox = messages.prologue.msg1;
 }
 
 
@@ -612,6 +633,9 @@ function draw() {
 	clear();
 	createCanvas(screenWidth, screenHeight);
 	background(currentStage.back);
+
+	var TLC = thing;
+
 	if (stageChanged == true) {
 		entities = currentStage.walls;
 
@@ -648,10 +672,24 @@ function draw() {
 			});
 		}
 
+		entities.forEach(function(ele) {
+			ele.pos.y -= currentStage.Sy;
+			ele.pos.x -= currentStage.Sx
+			TLC.pos.y -= currentStage.Sy;
+			TLC.pos.x -= currentStage.Sx;
+		});
+
+		doors.forEach(function(ele){
+			entities.forEach(function(elem){
+				if(ele.name == elem.name){
+					ele.x = elem.pos.x;
+					ele.y = elem.pos.y + 1;
+				}
+			});
+		});
+
 		stageChanged = false;
 	}
-
-	var TLC = thing;
 
 	//quest menu
 	if (menu == 'quest') {
@@ -852,10 +890,14 @@ function draw() {
 	//creates a text box for all text
 	if (textBox != undefined) {
 		fill('#FFFF70');
+		rect(0, 340, 200, 50);
 		rect(0, 12 * UNIT, 15 * UNIT, 100);
+
 		fill(0);
-		textSize(20);
 		strokeWeight(0);
+		textSize(25);
+		text(textBox.author, 10, 370);
+		textSize(20);
 		text(textBox.message, 10, 13 * UNIT);
 		strokeWeight(1);
 	}
@@ -863,13 +905,10 @@ function draw() {
 	//battle interface
 	if (menu == false) {
 		//weapon charger
-		fill('blue');
-		rect(0, 50, UNIT, 15 * UNIT - player.weapon.max_charge * 5);
-		fill('yellow');
-		rect(0, 50, UNIT, 15 * UNIT - player.weapon.max_charge * 5 - charge);
+		if (player.weapon != undefined)
 
-		//health bar
-		fill(0);
+			//health bar
+			fill(0);
 		textSize(30);
 		//text(player.HP, 300, 25);
 		fill(250);
@@ -912,7 +951,7 @@ function draw() {
 	}
 
 	//weapon charger
-	if (mouseIsPressed == true && menu == false && player.weapon.type == 'charger') {
+	if (mouseIsPressed == true && menu == false && player.weapon != undefined && player.weapon.type == 'charger') {
 		if (charge < 15 * UNIT - player.weapon.max_charge * 5) {
 			charge += 10;
 		}
@@ -1261,7 +1300,7 @@ function mousePressed() {
 function mouseReleased() {
 	let TLC = thing;
 
-	if (menu == false) {
+	if (menu == false && player.weapon != undefined) {
 		let xx = TLC.pos.x + player.pos.x;
 		let yy = TLC.pos.y + player.pos.y;
 
