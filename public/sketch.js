@@ -80,7 +80,7 @@ var player = {
 // all levels go in here
 let levels = {
 	test: {
-		name: 'test', 
+		name: 'test',
 		HEIGHT: 16,
 		WIDTH: 16,
 		walls: [],
@@ -88,34 +88,34 @@ let levels = {
 	},
 	prologue: {
 		hall: {
-			name: 'hall', 
+			name: 'hall',
 			HEIGHT: 16,
 			WIDTH: 11,
 			walls: [
 				{
-				name: "Chris's office",
-				type: 'door',
-				pos: {
-					x: 5,
-					y: 1,
+					name: "Chris's office",
+					type: 'door',
+					pos: {
+						x: 5,
+						y: 1,
+					},
+					color: 'green',
 				},
-				color: 'green',
-			},
 			],
 			back: 300,
 		},
 		office: {
-			name: "Chris's office", 
-			HEIGHT: 16, 
-			WIDTH: 16, 
-			walls: [], 
-			back: 300, 
-		}, 
+			name: "Chris's office",
+			HEIGHT: 16,
+			WIDTH: 16,
+			walls: [],
+			back: 300,
+		},
 	},
 	chapter1: {
 		tutorial: {
 			lv1: {
-				name: "Tutorial level 1", 
+				name: "Tutorial level 1",
 				HEIGHT: 16,
 				WIDTH: 16,
 				walls: [
@@ -259,8 +259,12 @@ let doors = [
 		y: 2,
 		room: levels.prologue.hall,
 		target: levels.prologue.office,
-		Sx: 7, 
-		Sy: 10, 
+	},
+	test = {
+		x: 6,
+		y: 15,
+		room: levels.prologue.hall,
+		target: levels.chapter1.tutorial.lv1,
 	},
 ];
 
@@ -276,12 +280,10 @@ var thing = {
 function checkDoors() {
 	doors.forEach(function(ele) {
 		if (currentStage == ele.room) {
-			if(player.pos.x == ele.x){
-				if(player.pos.y == ele.y){
+			if (player.pos.x == ele.x) {
+				if (player.pos.y == ele.y) {
 					currentStage = ele.target;
 					stageChanged = true;
-					player.pos.x = ele.Sx;
-					player.pos.y = ele.Sy;
 				}
 			}
 		}
@@ -289,11 +291,45 @@ function checkDoors() {
 }
 
 //teleports player to a room at certain courdinates
-function teleport(room, x, y){
+function teleport(room, x, y) {
 	currentStage = room;
 	player.pos.x = x;
 	player.pos.y = y;
 	stageChanged = true;
+}
+
+//moves entities when the player moves
+function entitiesMove(pos, PM) {
+	entities.forEach(function(ele) {
+		if (pos == 'x') {
+			if (PM == 'P') {
+				ele.pos.x -= 1;
+			} else if (PM == 'M') {
+				ele.pos.x += 1;
+			}
+		} else if (pos == 'y') {
+			if (PM == 'P') {
+				ele.pos.y -= 1;
+			} else if (PM == 'M') {
+				ele.pos.y += 1;
+			}
+		}
+	});
+	playerList.forEach(function(ele) {
+		if (pos == 'x') {
+			if (PM == 'P') {
+				ele.pos.x -= 1;
+			} else if (PM == 'M') {
+				ele.pos.x += 1;
+			}
+		} else if (pos == 'y') {
+			if (PM == 'P') {
+				ele.pos.y -= 1;
+			} else if (PM == 'M') {
+				ele.pos.y += 1;
+			}
+		}
+	});
 }
 
 
@@ -623,7 +659,7 @@ function draw() {
 
 		fill(0);
 		textSize(30);
-		text("Nothing yet!", 150, 200);
+		text("No quests yet!", 150, 200);
 	}
 
 	//shows death screen
@@ -1088,40 +1124,6 @@ function draw() {
 							}
 						});
 						break;
-				}
-			}
-		});
-	}
-
-	//moves entities when the player moves
-	function entitiesMove(pos, PM) {
-		entities.forEach(function(ele) {
-			if (pos == 'x') {
-				if (PM == 'P') {
-					ele.pos.x -= 1;
-				} else if (PM == 'M') {
-					ele.pos.x += 1;
-				}
-			} else if (pos == 'y') {
-				if (PM == 'P') {
-					ele.pos.y -= 1;
-				} else if (PM == 'M') {
-					ele.pos.y += 1;
-				}
-			}
-		});
-		playerList.forEach(function(ele) {
-			if (pos == 'x') {
-				if (PM == 'P') {
-					ele.pos.x -= 1;
-				} else if (PM == 'M') {
-					ele.pos.x += 1;
-				}
-			} else if (pos == 'y') {
-				if (PM == 'P') {
-					ele.pos.y -= 1;
-				} else if (PM == 'M') {
-					ele.pos.y += 1;
 				}
 			}
 		});
