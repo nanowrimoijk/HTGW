@@ -85,8 +85,8 @@ let levels = {
 		WIDTH: 16,
 		walls: [],
 		back: 220,
-		Sx: 0, 
-		Sy: 0, 
+		Sx: 0,
+		Sy: 0,
 	},
 	prologue: {
 		hall: {
@@ -104,18 +104,49 @@ let levels = {
 					color: 'green',
 				},
 				{
-					name: "Adom", 
-					type: 'NPC', 
+					name: "Adom",
+					type: 'NPC',
+					id: 'AdomBR',
 					pos: {
-						x: 5, 
-						y: 7, 
-					}, 
-					color: 'blue', 
-				}, 
+						x: 5,
+						y: 7,
+					},
+					color: 'blue',
+				},
+				{
+					name: "Adom",
+					type: 'NPC',
+					id: 'AdomBL',
+					pos: {
+						x: 4,
+						y: 7,
+					},
+					color: 'blue',
+				},
+				{
+					name: "Adom",
+					type: 'NPC',
+					id: 'AdomTR',
+					pos: {
+						x: 5,
+						y: 6,
+					},
+					color: 'blue',
+				},
+				{
+					name: "Adom",
+					type: 'NPC',
+					id: 'AdomTL',
+					pos: {
+						x: 4,
+						y: 6,
+					},
+					color: 'blue',
+				},
 			],
 			back: 300,
-			Sx: 2, 
-			Sy: 0, 
+			Sx: 2,
+			Sy: 0,
 		},
 		office: {
 			name: "Chris's office",
@@ -123,8 +154,8 @@ let levels = {
 			WIDTH: 16,
 			walls: [],
 			back: 300,
-			Sx: 0, 
-			Sy: 8, 
+			Sx: 0,
+			Sy: 8,
 		},
 	},
 	chapter1: {
@@ -168,8 +199,8 @@ let levels = {
 					},
 				],
 				back: 230,
-				Sx: 0, 
-				Sy: 0, 
+				Sx: 0,
+				Sy: 0,
 			},
 		},
 	},
@@ -186,9 +217,14 @@ function ArrayRemove(arr, value) {
 	//Array = ArrayRemove(Array, "food");
 }
 
+var thing = {
+	pos: { x: player.pos.x - 7, y: player.pos.y - 7 },
+}
+
 let screenWidth = 480; //default: 480
 let screenHeight = 480; //default: 480
 
+let event = "start1";
 let menu = false; //default: 'main'
 let devTools = false //default: false
 let currentStage = levels.prologue.hall; //default: levels.prologue.hall
@@ -204,24 +240,44 @@ let Y = player.pos.y;
 
 let stageChanged = true; //default: true
 
-const online = true; //default: true
-var playerList = [];
+let online = false; //default: true
+
+var playerList = [
+	Adom = {
+		type: 'player',
+		pos: {
+			x: 3,
+			y: 7,
+		},
+		id: 'Adom',
+		color: 'blue',
+		direction: 'RIGHT',
+		room: levels.prologue.hall, 
+		HP: 300,
+	}
+];
+
 var chat = [];
+let movement = true;
 var WASD = true; //default: true
 var arrowKeys = false; //default: false
 var keys = [];
 
 let messages = {
 	test: {
-		author: "Nanowrimoijk", 
+		author: "Nanowrimoijk",
 		message: "It would be cool if somebody went out of their way to \nfind this!",
 	},
 	prologue: {
 		msg1: {
-			author: 'Adom', 
+			author: 'Adom',
 			message: "Now, she may seem intimidating or rude, but I \npromise you she won't hurt you."
-		}, 
-	}, 
+		},
+		msg2: {
+			author: 'Adom', 
+			message: "Go on right through that door to see her.", 
+		}
+	},
 	chapter1: {
 		tutorial: {
 			msg1: {
@@ -236,6 +292,13 @@ let messages = {
 	},
 }
 let textBox = undefined;
+
+let variables = {
+	prologue: {
+		text1: false, 
+		text2: false, 
+	}, 
+}
 
 //var chatX = 10;
 //var chatY = 10;
@@ -279,8 +342,8 @@ let buttons = {
 
 let doors = [
 	chris_office = {
-		name: "Chris's office", 
-		x: 5, 
+		name: "Chris's office",
+		x: 5,
 		y: 1,
 		room: levels.prologue.hall,
 		target: levels.prologue.office,
@@ -294,11 +357,6 @@ let doors = [
 ];
 
 let charge = 0;
-
-
-var thing = {
-	pos: { x: player.pos.x - 7, y: player.pos.y - 7 },
-}
 
 
 //checks player's cordinates and teleports player to correct room
@@ -349,8 +407,23 @@ function entitiesMove(pos, PM) {
 	});
 }
 
-function start(){
-	textBox = messages.prologue.msg1;
+//starts the game with the prologue
+function start() {
+	if(event == 'start1'){
+		if(variables.prologue.text1 == false){
+			textBox = messages.prologue.msg1;
+			variables.prologue.text1 = true;
+		}
+		if(textBox == undefined){
+			if(variables.prologue.text1 == true && variables.prologue.text2 == false){
+				textBox = messages.prologue.msg2;
+				variables.prologue.text2 = true;
+			}else if(variables.prologue.text1 == true && variables.prologue.text2 == true){
+				textBox = undefined;
+				event = 'start2';
+			}
+		}
+	}
 }
 
 
@@ -633,6 +706,7 @@ function draw() {
 	clear();
 	createCanvas(screenWidth, screenHeight);
 	background(currentStage.back);
+	start()
 
 	var TLC = thing;
 
@@ -679,9 +753,9 @@ function draw() {
 			TLC.pos.x -= currentStage.Sx;
 		});
 
-		doors.forEach(function(ele){
-			entities.forEach(function(elem){
-				if(ele.name == elem.name){
+		doors.forEach(function(ele) {
+			entities.forEach(function(elem) {
+				if (ele.name == elem.name) {
 					ele.x = elem.pos.x;
 					ele.y = elem.pos.y + 1;
 				}
@@ -860,17 +934,23 @@ function draw() {
 	}
 
 	//other player creator
-	if (online != false && menu == false) {
+	if (menu == false) {
 		playerList.forEach(function(ele) {
-			fill('red');
-			rect(ele.pos.x * UNIT, ele.pos.y * UNIT, UNIT, UNIT);
-			rect((ele.pos.x - 1) * UNIT, ele.pos.y * UNIT, UNIT, UNIT);
-			rect((ele.pos.x - 1) * UNIT, (ele.pos.y - 1) * UNIT, UNIT, UNIT);
-			rect(ele.pos.x * UNIT, (ele.pos.y - 1) * UNIT, UNIT, UNIT);
+			if (currentStage == ele.room) {
+				if (ele.color == undefined) {
+					fill('red');
+				} else {
+					fill(ele.color);
+				}
+				rect(ele.pos.x * UNIT, ele.pos.y * UNIT, UNIT, UNIT);
+				rect((ele.pos.x - 1) * UNIT, ele.pos.y * UNIT, UNIT, UNIT);
+				rect((ele.pos.x - 1) * UNIT, (ele.pos.y - 1) * UNIT, UNIT, UNIT);
+				rect(ele.pos.x * UNIT, (ele.pos.y - 1) * UNIT, UNIT, UNIT);
 
-			//how the player looks
-			rect((ele.pos.x - 1) * UNIT, (ele.pos.y - 1) * UNIT, UNIT * 2, UNIT * 2);
-			playerTurn(ele.pos.x, ele.pos.y, ele);
+				//how the player looks
+				rect((ele.pos.x - 1) * UNIT, (ele.pos.y - 1) * UNIT, UNIT * 2, UNIT * 2);
+				playerTurn(ele.pos.x, ele.pos.y, ele);
+			}
 		});
 	}
 
@@ -889,6 +969,7 @@ function draw() {
 
 	//creates a text box for all text
 	if (textBox != undefined) {
+		movement = false;
 		fill('#FFFF70');
 		rect(0, 340, 200, 50);
 		rect(0, 12 * UNIT, 15 * UNIT, 100);
@@ -900,6 +981,8 @@ function draw() {
 		textSize(20);
 		text(textBox.message, 10, 13 * UNIT);
 		strokeWeight(1);
+	} else {
+		movement = true;
 	}
 
 	//battle interface
@@ -1169,7 +1252,7 @@ function draw() {
 	}
 
 	//player movement
-	if (menu == false) {
+	if (menu == false && movement == true) {
 		if (arrowKeys == true) {
 			if (keyIsDown(LEFT_ARROW)) {
 				let l = Colide('LEFT');
