@@ -152,7 +152,150 @@ let levels = {
 			name: "Chris's office",
 			HEIGHT: 16,
 			WIDTH: 16,
-			walls: [],
+			walls: [
+				//top table side
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 5,
+						y: 6,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 6,
+						y: 6,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 7,
+						y: 6,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 8,
+						y: 6,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 9,
+						y: 6,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 10,
+						y: 6,
+					},
+					color: 'brown',
+				}, 
+				//left table side
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 5,
+						y: 7,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 5,
+						y: 8,
+					},
+					color: 'brown',
+				}, 
+				//right table side
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 10,
+						y: 7,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 10,
+						y: 8,
+					},
+					color: 'brown',
+				}, 
+				//bottom table side
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 6,
+						y: 8,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 7,
+						y: 8,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 8,
+						y: 8,
+					},
+					color: 'brown',
+				}, 
+				{
+					name: "table",
+					type: 'wall',
+					pos: {
+						x: 9,
+						y: 8,
+					},
+					color: 'brown',
+				}, 
+				//table top
+				{
+					name: "table",
+					type: 'flat',
+					pos: {
+						x: 5,
+						y: 6,
+					},
+					width: 6, 
+					height: 3, 
+					color: 'brown',
+				}, 
+			],
 			back: 300,
 			Sx: 0,
 			Sy: 8,
@@ -221,13 +364,13 @@ var thing = {
 	pos: { x: player.pos.x - 7, y: player.pos.y - 7 },
 }
 
-let screenWidth = 480; //default: 480
-let screenHeight = 480; //default: 480
+let screenWidth = 600; //default: 480
+let screenHeight = 550; //default: 480
 
-let event = "start1";
+let event = "start2";
 let menu = false; //default: 'main'
 let devTools = false //default: false
-let currentStage = levels.prologue.hall; //default: levels.prologue.hall
+let currentStage = levels.prologue.office; //default: levels.prologue.hall
 let entities;
 
 UNIT = 32;
@@ -254,7 +397,19 @@ var playerList = [
 		direction: 'RIGHT',
 		room: levels.prologue.hall, 
 		HP: 300,
-	}
+	}, 
+	Chris = {
+		type: 'player', 
+		pos: {
+			x: 8, 
+			y: -3, 
+		}, 
+		id: 'Chris', 
+		color: 'green', 
+		direction: 'DOWN', 
+		room: levels.prologue.office, 
+		HP: 300, 
+	}, 
 ];
 
 var chat = [];
@@ -423,6 +578,8 @@ function start() {
 				event = 'start2';
 			}
 		}
+	}else if(event == 'start2'){
+		if(currentStage == levels.prologue.office){}
 	}
 }
 
@@ -926,7 +1083,13 @@ function draw() {
 				fill(ele.color);
 				rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT * 2, UNIT * 2);
 
-			} else {
+			} else if(ele.type == 'flat'){
+				var offsetX = TLC.pos.x - ele.pos.x;
+				var offsetY = TLC.pos.y - ele.pos.y;
+
+				fill(ele.color);
+				rect((TLC.pos.x - offsetX) * UNIT, (TLC.pos.y - offsetY) * UNIT, UNIT * ele.width, UNIT * ele.height);
+			}else{
 				console.log(`deleted ${ele}`);
 				entities = ArrayRemove(entities, ele);
 			}
