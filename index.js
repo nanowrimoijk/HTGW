@@ -9,12 +9,14 @@ console.log("My socket server is running!");
 const socket = require('socket.io');
 const io = socket(server);
 
+console.clear();
+
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
 	socket.on('disconnecting', newDisconnect);
 
-	var data2 = {
+	let data2 = {
 		id: socket.id, 
 	}
 
