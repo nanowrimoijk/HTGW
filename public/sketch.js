@@ -1,5 +1,261 @@
 let socket;
 
+class Server {
+	//creates a new character for each new player
+	newPlayer(data1) {
+
+		let TLC = thing;
+
+		if (online == true) {
+			let RC = Random(255);
+			let player0 = {
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data1.x,
+					y: TLC.pos.y + data1.y,
+				},
+				id: data1.id,
+				color: 'red',
+				direction: 'UP',
+				HP: 300,
+			}
+			let player0BR = {
+				name: 'BR',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data1.x,
+					y: TLC.pos.y + data1.y,
+				},
+				id: data1.id,
+				color: 'red',
+			}
+			let player0BL = {
+				name: 'BL',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data1.x - 1,
+					y: TLC.pos.y + data1.y,
+				},
+				id: data1.id,
+				color: 'red',
+			}
+			let player0TR = {
+				name: 'TR',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data1.x,
+					y: TLC.pos.y + data1.y - 1,
+				},
+				id: data1.id,
+				color: 'red',
+			}
+			let player0TL = {
+				name: 'TL',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data1.x - 1,
+					y: TLC.pos.y + data1.y - 1,
+				},
+				id: data1.id,
+				color: 'red',
+			}
+			playerList.push(player0);
+			entities.push(player0BR);
+			entities.push(player0BL);
+			entities.push(player0TR);
+			entities.push(player0TL);
+		}
+	}
+	//handles other player's movement data
+	newMove(data) {
+		let found = false;
+
+		let TLC = thing;
+
+		function moveP(element, data) {
+			if (data.xy == 'x') {
+				if (data.PM == 'P') {
+					element.pos.x++;
+				} else if (data.PM == 'M') {
+					element.pos.x--;
+				}
+			} else if (data.xy == 'y') {
+				if (data.PM == 'P') {
+					element.pos.y++;
+				} else if (data.PM == 'M') {
+					element.pos.y--;
+				}
+			} else if (data.xy == undefined) {
+				element.pos.x = element.pos.x;
+				element.pos.y = element.pos.y;
+			}
+			//console.log(element);
+		}
+
+		//checks playerList for the id of incoming player data
+		playerList.forEach(function(ele) {
+			if (ele.id == data.id) {
+				entities.forEach(function(element) {
+					if (element.id == data.id) {
+						moveP(element, data);
+					}
+				});
+				found = true;
+				moveP(ele, data);
+				ele.direction = data.direction;
+			}
+			if (ele.id == undefined) {
+				playerList = ArrayRemove(playerList, ele);
+			}
+		});
+
+		//if no player with the id is found then it creates one
+		if (found == false) {
+			//console.log(`socket ${data.id} not found`);
+			//console.log(`adding ${data.id} to player list`);
+			let player1 = {
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data.x,
+					y: TLC.pos.y + data.y,
+				},
+				id: data.id,
+				color: 'red',
+				HP: 300,
+			}
+			let player1BR = {
+				name: 'BR',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data.x,
+					y: TLC.pos.y + data.y,
+				},
+				id: data.id,
+				color: 'red',
+			}
+			let player1BL = {
+				name: 'BL',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data.x - 1,
+					y: TLC.pos.y + data.y,
+				},
+				id: data.id,
+				color: 'red',
+			}
+			let player1TR = {
+				name: 'TR',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data.x,
+					y: TLC.pos.y + data.y - 1,
+				},
+				id: data.id,
+				color: 'red',
+			}
+			let player1TL = {
+				name: 'TL',
+				type: 'player',
+				pos: {
+					x: TLC.pos.x + data.x - 1,
+					y: TLC.pos.y + data.y - 1,
+				},
+				id: data.id,
+				color: 'red',
+			}
+			playerList.push(player1);
+			entities.push(player1BR);
+			entities.push(player1BL);
+			entities.push(player1TR);
+			entities.push(player1TL);
+			//console.log(playerList);
+		}
+	}
+	//sends out this player's movement data
+	playerMoved(xy, PM) {
+		let data = {
+			PM: PM,
+			xy: xy,
+			id: socket.id,
+			direction: player.direction,
+			x: player.pos.x,
+			y: player.pos.y,
+		}
+
+		socket.emit('move', data);
+	}
+	//handles player disconnections
+	playerDisconnect(data2) {
+		playerList.forEach(function(ele) {
+			if (ele.id == data2.id) {
+				//console.log(playerList);
+				//console.log(data2.id);
+				playerList = ArrayRemove(playerList, ele);
+				//console.log(playerList);
+			}
+		});
+		entities.forEach(function(ele) {
+			if (ele.id == data2.id) {
+				entities = ArrayRemove(entities, ele);
+			}
+		});
+		//console.log(entities);
+		//console.log(playerList);
+	}
+	//handles new attacks from other players
+	newAttack(data) {
+		let TLC = thing;
+
+		let x;
+		let y;
+
+		entities.forEach(function(ele) {
+			if (ele.id == data.id) {
+				x = TLC.pos.x + ele.pos.x;
+				y = TLC.pos.y + ele.pos.y;
+			}
+		});
+
+		switch (data.direction) {
+			case 'UP':
+				y -= 2;
+				break;
+			case 'DOWN':
+				x -= 1;
+				y += 1;
+				break;
+			case 'RIGHT':
+				x += 1;
+				break;
+			case 'LEFT':
+				x -= 2;
+				y -= 1;
+		}
+
+		let Data = {
+			dmg: data.dmg,
+			id: data.id,
+			direction: data.direction,
+			pos: {
+				x: x,
+				y: y,
+			},
+			type: data.type,
+		}
+		entities.push(Data);
+	}
+	//lowers player's HP if attack matches id
+	lowerHealth(data) {
+		if (data.id == socket.id) {
+			player.HP -= data.dmg;
+			if (player.HP <= 0) {
+				menu = 'dead';
+				socket.disconnect();
+			}
+		}
+	}
+}
+
 let weapons = {
 	lunarshot: {
 		Hytex: {
@@ -63,6 +319,16 @@ let weapons = {
 			type: 'charger',
 		},
 	},
+	tiger: {
+		Hytex: {
+			dmg: 25,
+			energy: 20,
+			range: 6.5,
+			cooldown: 7,
+			max_cooldown: 6, 
+			type: 'full automatic',
+		}
+	}
 }
 
 let player = {
@@ -73,7 +339,7 @@ let player = {
 	PM: 'P',
 	xy: 'x',
 	HP: 300,
-	weapon: weapons.lunarshot.Hytex,
+	weapon: weapons.tiger.Hytex,
 	energy: 5000,
 }
 
@@ -388,15 +654,15 @@ let levels = {
 			},
 			lv2: {
 				name: "Tutorial level 2",
-				HEIGHT: 16,
-				WIDTH: 16,
+				HEIGHT: 19,
+				WIDTH: 19,
 				walls: [
+					//enemy
 					{
 						name: 'enemy0-BR',
 						id: 'enemy0',
 						type: 'enemy',
-						moveAI: 'stationary',
-						pos: { x: 10, y: 6 },
+						pos: { x: 10, y: 10 },
 						color: 'red',
 						HP: 300,
 					},
@@ -404,8 +670,7 @@ let levels = {
 						name: 'enemy0-BL',
 						id: 'enemy0',
 						type: 'enemy',
-						moveAI: 'stationary',
-						pos: { x: 9, y: 6 },
+						pos: { x: 9, y: 10 },
 						color: 'red',
 						HP: 300,
 					},
@@ -413,8 +678,7 @@ let levels = {
 						name: 'enemy0-TR',
 						id: 'enemy0',
 						type: 'enemy',
-						moveAI: 'stationary',
-						pos: { x: 10, y: 5 },
+						pos: { x: 10, y: 9 },
 						color: 'red',
 						HP: 300,
 					},
@@ -422,9 +686,129 @@ let levels = {
 						name: 'enemy0-TL',
 						id: 'enemy0',
 						type: 'enemy',
-						moveAI: 'stationary',
-						pos: { x: 9, y: 5 },
+						pos: { x: 9, y: 9 },
 						color: 'red',
+						HP: 300,
+					},
+					//walls
+					{
+						type: 'wall',
+						pos: { x: 12, y: 14 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 7, y: 14 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 6, y: 14 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 5, y: 14 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 5, y: 13 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 5, y: 12 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 5, y: 7 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 5, y: 6 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 5, y: 5 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 6, y: 5 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 7, y: 5 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 12, y: 5 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 13, y: 5 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 14, y: 5 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 14, y: 6 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 14, y: 7 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 14, y: 12 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 14, y: 13 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 14, y: 14 },
+						color: 'grey',
+						HP: 300,
+					},
+					{
+						type: 'wall',
+						pos: { x: 13, y: 14 },
+						color: 'grey',
 						HP: 300,
 					},
 				],
@@ -440,7 +824,7 @@ let levels = {
 						cooldown: 100,
 						preset: undefined,
 						timer: 100,
-						pos: { x: 10, y: 6 },
+						pos: { x: 10, y: 10 },
 						direction: 'DOWN',
 						color: 'red',
 						HP: 300,
@@ -448,9 +832,19 @@ let levels = {
 				],
 				back: 230,
 				Sx: 0,
-				Sy: 0,
+				Sy: 10,
 			},
 		},
+		FS: {
+			name: "Faster Blaster Station",
+			HEIGHT: 20,
+			WIDTH: 20,
+			walls: [],
+			enemies: [],
+			back: 230,
+			Sx: 0,
+			Sy: 0,
+		}
 	},
 }
 
@@ -472,23 +866,26 @@ let thing = {
 let screenWidth = 600; //default: 480
 let screenHeight = 550; //default: 480
 
-let event = "start1T"; //default: 'start1'
+let event = "start1t"; //default: 'start1'
 let menu = false; //default: 'main'
-let devTools = false //default: false
+let devTools = false; //default: false
 let currentStage = levels.chapter1.tutorial.lv2; //default: levels.prologue.hall
 let entities;
 
-UNIT = 32;
+UNIT = 32;//default: 32
 let WIDTH = currentStage.WIDTH;
 let HEIGHT = currentStage.HEIGHT;
 const BOXW = 2;
 const BOXH = 2;
 let X = player.pos.x;
 let Y = player.pos.y;
+let moveTimer = 2;
+let MT = 2;
 
 let stageChanged = true; //default: true
 
 let online = false; //default: true
+let server = new Server;
 
 let playerList = [
 	Adom = {
@@ -506,7 +903,7 @@ let playerList = [
 	Chris = {
 		type: 'player',
 		pos: {
-			x: 2,
+			x: 3,
 			y: -3,
 		},
 		id: 'Chris',
@@ -518,7 +915,7 @@ let playerList = [
 	Spencer = {
 		type: 'player',
 		pos: {
-			x: -4,
+			x: -3,
 			y: -2,
 		},
 		id: 'Spencer',
@@ -530,7 +927,7 @@ let playerList = [
 	Ray = {
 		type: 'player',
 		pos: {
-			x: -4,
+			x: -3,
 			y: 0,
 		},
 		id: 'Ray',
@@ -609,7 +1006,7 @@ let messages = {
 			//level 1
 			msg1: {
 				author: 'Adom',
-				message: "OK, Spencer has supplied you with a Lunarshot, so \nyou should see a yellow bar up top, that is your \ncharge meter.",
+				message: "OK, Spencer has supplied you with a Lunarshot, so \nyou should see a yellow bar up top, that is your \ncharge meter, and the blue one is it's energy.",
 			},
 			msg2: {
 				author: 'Adom',
@@ -628,11 +1025,23 @@ let messages = {
 				message: "That was good, for a start. Next let's test how you do \nagainst an opponent that will fight back.",
 			},
 			//level 2
+			msg6: {
+				author: 'Adom',
+				message: "OK, so here we have an enemy that will turn all \ndirections and fires when it sees you, try defeating it.",
+			},
+			msg7: {
+				author: 'Adom',
+				message: "Good job on defeating that enemy, but I just \nreceived word that one of our areas is under \nattack.",
+			},
+			msg8: {
+				author: 'Adom',
+				message: "Chris has ordered that you be sent even though you \nhaven't finished training. I believe in you!"
+			},
 		},
 	},
 }
 
-let textBox = undefined;
+let textBox = undefined;//default: undefined
 
 let variables = {
 	prologue: {
@@ -658,7 +1067,28 @@ let variables = {
 			text4: false,
 			text5: false,
 			//level 2
+			text6: false,
+			text7: false,
+			text8: false,
 		},
+	},
+	levelS: {
+		FBS: false,
+		RS: false,
+		C1: false,
+		C2: false,
+		C3: false,
+		DS: false,
+		CS: false,
+		MS: false,
+		BS: false,
+		GS: false,
+		CAS: false,
+		LHQ: false,
+		EC2: false,
+		EC3: false,
+		EMS: false,
+		ELHQ: false,
 	},
 }
 
@@ -705,16 +1135,10 @@ let buttons = {
 let doors = [
 	chris_office = {
 		name: "Chris's office",
-		x: 5,
+		x: 7,
 		y: 1,
 		room: levels.prologue.hall,
 		target: levels.prologue.office,
-	},
-	test = {
-		x: 6,
-		y: 15,
-		room: levels.prologue.hall,
-		target: levels.chapter1.tutorial.lv1,
 	},
 ];
 
@@ -879,21 +1303,23 @@ function entitiesMove(pos, PM) {
 			}
 		}
 	});
-	currentStage.enemies.forEach(function(ele) {
-		if (pos == 'x') {
-			if (PM == 'P') {
-				ele.pos.x -= 1;
-			} else if (PM == 'M') {
-				ele.pos.x += 1;
+	if (currentStage.enemies != undefined) {
+		currentStage.enemies.forEach(function(ele) {
+			if (pos == 'x') {
+				if (PM == 'P') {
+					ele.pos.x -= 1;
+				} else if (PM == 'M') {
+					ele.pos.x += 1;
+				}
+			} else if (pos == 'y') {
+				if (PM == 'P') {
+					ele.pos.y -= 1;
+				} else if (PM == 'M') {
+					ele.pos.y += 1;
+				}
 			}
-		} else if (pos == 'y') {
-			if (PM == 'P') {
-				ele.pos.y -= 1;
-			} else if (PM == 'M') {
-				ele.pos.y += 1;
-			}
-		}
-	});
+		});
+	}
 }
 
 //starts the game with the prologue
@@ -1129,7 +1555,7 @@ function start() {
 	}
 }
 
-let defeated = true;
+let defeated = false;//default: false
 
 //runs the tutorial levels
 function tutorial() {
@@ -1159,6 +1585,7 @@ function tutorial() {
 
 			} else if (defeated == true && variables.chapter1.tutorial.text5 == true) {
 				event = 'tutorial3';
+				defeated = false;
 			}
 		}
 
@@ -1174,7 +1601,47 @@ function tutorial() {
 			textBox = messages.chapter1.tutorial.msg5;
 			variables.chapter1.tutorial.text5 = true;
 		}
-	} else if (event == 'tutorial3') { }
+
+	} else if (event == 'tutorial3') {
+		currentStage = levels.chapter1.tutorial.lv2;
+		stageChanged = true;
+		event = 'tutorial4';
+		defeated = false;
+	} else if (event == 'tutorial4') {
+		if (variables.chapter1.tutorial.text6 == false) {
+			textBox = messages.chapter1.tutorial.msg6;
+			variables.chapter1.tutorial.text6 = true;
+		}
+
+		levels.chapter1.tutorial.lv2.walls.forEach(function(ele) {
+			if (ele.id == 'enemy0') {
+				if (ele.HP <= 0) {
+					defeated = true;
+				}
+			}
+		});
+
+		if (defeated == true) {
+			event = 'tutorial5';
+		}
+
+	} else if (event == 'tutorial5') {
+		if (variables.chapter1.tutorial.text7 == false) {
+			textBox = messages.chapter1.tutorial.msg7;
+			variables.chapter1.tutorial.text7 = true;
+		}
+
+		if (textBox == undefined) {
+			if (variables.chapter1.tutorial.text7 == true && variables.chapter1.tutorial.text8 == false) {
+				textBox = messages.chapter1.tutorial.msg8;
+				variables.chapter1.tutorial.text8 = true;
+
+			} else if (variables.chapter1.tutorial.text8) {
+				event = 'chapter1';
+				menu = 'levelS';
+			}
+		}
+	}
 }
 
 
@@ -1185,270 +1652,11 @@ function setup() {
 
 	//if online mode is on, then check for server events
 	if (online == true) {
-		socket.on('newPlayer', newPlayer);
-		socket.on('move', newMove);
-		socket.on('playerDisconnect', playerDisconnect);
-		socket.on('attack', newAttack);
-		socket.on('bulletHit', lowerHealth);
-	}
-}
-
-//creates a new character for each new player
-function newPlayer(data1) {
-
-	let TLC = thing;
-
-	if (online == true) {
-		let RC = Random(255);
-		let player0 = {
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data1.x,
-				y: TLC.pos.y + data1.y,
-			},
-			id: data1.id,
-			color: 'red',
-			direction: 'UP',
-			HP: 300,
-		}
-		let player0BR = {
-			name: 'BR',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data1.x,
-				y: TLC.pos.y + data1.y,
-			},
-			id: data1.id,
-			color: 'red',
-		}
-		let player0BL = {
-			name: 'BL',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data1.x - 1,
-				y: TLC.pos.y + data1.y,
-			},
-			id: data1.id,
-			color: 'red',
-		}
-		let player0TR = {
-			name: 'TR',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data1.x,
-				y: TLC.pos.y + data1.y - 1,
-			},
-			id: data1.id,
-			color: 'red',
-		}
-		let player0TL = {
-			name: 'TL',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data1.x - 1,
-				y: TLC.pos.y + data1.y - 1,
-			},
-			id: data1.id,
-			color: 'red',
-		}
-		playerList.push(player0);
-		entities.push(player0BR);
-		entities.push(player0BL);
-		entities.push(player0TR);
-		entities.push(player0TL);
-	}
-}
-
-//handles other player's movement data
-function newMove(data) {
-	let found = false;
-
-	let TLC = thing;
-
-	function moveP(element, data) {
-		if (data.xy == 'x') {
-			if (data.PM == 'P') {
-				element.pos.x++;
-			} else if (data.PM == 'M') {
-				element.pos.x--;
-			}
-		} else if (data.xy == 'y') {
-			if (data.PM == 'P') {
-				element.pos.y++;
-			} else if (data.PM == 'M') {
-				element.pos.y--;
-			}
-		} else if (data.xy == undefined) {
-			element.pos.x = element.pos.x;
-			element.pos.y = element.pos.y;
-		}
-		//console.log(element);
-	}
-
-	//checks playerList for the id of incoming player data
-	playerList.forEach(function(ele) {
-		if (ele.id == data.id) {
-			entities.forEach(function(element) {
-				if (element.id == data.id) {
-					moveP(element, data);
-				}
-			});
-			found = true;
-			moveP(ele, data);
-			ele.direction = data.direction;
-		}
-		if (ele.id == undefined) {
-			playerList = ArrayRemove(playerList, ele);
-		}
-	});
-
-	//if no player with the id is found then it creates one
-	if (found == false) {
-		//console.log(`socket ${data.id} not found`);
-		//console.log(`adding ${data.id} to player list`);
-		let player1 = {
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data.x,
-				y: TLC.pos.y + data.y,
-			},
-			id: data.id,
-			color: 'red',
-			HP: 300,
-		}
-		let player1BR = {
-			name: 'BR',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data.x,
-				y: TLC.pos.y + data.y,
-			},
-			id: data.id,
-			color: 'red',
-		}
-		let player1BL = {
-			name: 'BL',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data.x - 1,
-				y: TLC.pos.y + data.y,
-			},
-			id: data.id,
-			color: 'red',
-		}
-		let player1TR = {
-			name: 'TR',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data.x,
-				y: TLC.pos.y + data.y - 1,
-			},
-			id: data.id,
-			color: 'red',
-		}
-		let player1TL = {
-			name: 'TL',
-			type: 'player',
-			pos: {
-				x: TLC.pos.x + data.x - 1,
-				y: TLC.pos.y + data.y - 1,
-			},
-			id: data.id,
-			color: 'red',
-		}
-		playerList.push(player1);
-		entities.push(player1BR);
-		entities.push(player1BL);
-		entities.push(player1TR);
-		entities.push(player1TL);
-		//console.log(playerList);
-	}
-}
-
-//sends out this player's movement data
-function playerMoved(xy, PM) {
-	let data = {
-		PM: PM,
-		xy: xy,
-		id: socket.id,
-		direction: player.direction,
-		x: player.pos.x,
-		y: player.pos.y,
-	}
-
-	socket.emit('move', data);
-}
-
-//handles player disconnections
-function playerDisconnect(data2) {
-	playerList.forEach(function(ele) {
-		if (ele.id == data2.id) {
-			//console.log(playerList);
-			//console.log(data2.id);
-			playerList = ArrayRemove(playerList, ele);
-			//console.log(playerList);
-		}
-	});
-	entities.forEach(function(ele) {
-		if (ele.id == data2.id) {
-			entities = ArrayRemove(entities, ele);
-		}
-	});
-	//console.log(entities);
-	//console.log(playerList);
-}
-
-//handles new attacks from other players
-function newAttack(data) {
-	let TLC = thing;
-
-	let x;
-	let y;
-
-	entities.forEach(function(ele) {
-		if (ele.id == data.id) {
-			x = TLC.pos.x + ele.pos.x;
-			y = TLC.pos.y + ele.pos.y;
-		}
-	});
-
-	switch (data.direction) {
-		case 'UP':
-			y -= 2;
-			break;
-		case 'DOWN':
-			x -= 1;
-			y += 1;
-			break;
-		case 'RIGHT':
-			x += 1;
-			break;
-		case 'LEFT':
-			x -= 2;
-			y -= 1;
-	}
-
-	let Data = {
-		dmg: data.dmg,
-		id: data.id,
-		direction: data.direction,
-		pos: {
-			x: x,
-			y: y,
-		},
-		type: data.type,
-	}
-	entities.push(Data);
-}
-
-//lowers player's HP if attack matches id
-function lowerHealth(data) {
-	if (data.id == socket.id) {
-		player.HP -= data.dmg;
-		if (player.HP <= 0) {
-			menu = 'dead';
-			socket.disconnect();
-		}
+		socket.on('newPlayer', server.newPlayer);
+		socket.on('move', server.newMove);
+		socket.on('playerDisconnect', server.playerDisconnect);
+		socket.on('attack', server.newAttack);
+		socket.on('bulletHit', server.lowerHealth);
 	}
 }
 
@@ -1507,7 +1715,7 @@ function draw() {
 
 		entities.forEach(function(ele) {
 			ele.pos.y -= currentStage.Sy;
-			ele.pos.x -= currentStage.Sx
+			ele.pos.x -= currentStage.Sx;
 			TLC.pos.y -= currentStage.Sy;
 			TLC.pos.x -= currentStage.Sx;
 		});
@@ -1521,77 +1729,93 @@ function draw() {
 			});
 		});
 
-		let player = {
-			name: 'player',
-			type: 'player',
-			pos: {
-				x: Y,
-				y: X,
-			},
-			id: socket.id,
-			color: 'red',
-			direction: 'UP',
-			HP: 300,
+		if (currentStage.enemies != undefined) {
+			currentStage.enemies.forEach(function(ele) {
+				ele.pos.y -= currentStage.Sy;
+				ele.pos.x -= currentStage.Sx;
+			});
 		}
-		let playerBR = {
-			name: 'player',
-			type: 'player',
-			pos: {
-				x: X,
-				y: Y,
-			},
-			id: socket.id,
-			color: 'red',
-		}
-		let playerBL = {
-			name: 'player',
-			type: 'player',
-			pos: {
-				x: X,
-				y: Y,
-			},
-			id: socket.id,
-			color: 'red',
-		}
-		let playerTR = {
-			name: 'player',
-			type: 'player',
-			pos: {
-				x: X,
-				y: Y,
-			},
-			id: socket.id,
-			color: 'red',
-		}
-		let playerTL = {
-			name: 'player',
-			type: 'player',
-			pos: {
-				x: X,
-				y: Y,
-			},
-			id: socket.id,
-			color: 'red',
-		}
-		entities.push(playerBR);
-		entities.push(playerBL);
-		entities.push(playerTR);
-		entities.push(playerTL);
-		playerList.push(player);
-
 
 		stageChanged = false;
 	}
 
+	//level select menu
+	if (menu == 'levelS') {
+		background(200);
+		//training 
+		circle(550, 300, 40);
+		line(500, 300, 530, 300);
+		line(500, 100, 500, 400);
+		//Faster Blaster
+		rect(480, 180, 40, 40);
+		//checkpoint 1
+		if (!variables.levelS.C1) {
+			line(500, 100, 200, 100);
+			triangle(360, 120, 400, 120, 380, 80);
+		}
+		//Red
+		if (!variables.levelS.RS) {
+			line(480, 200, 350, 200);
+			rect(400, 180, 40, 40);
+		}
+		//checkpoint 2
+		if (!variables.levelS.C2) {
+			line(350, 200, 350, 300);
+			triangle(330, 270, 370, 270, 350, 230);
+		}
+		//checkpoint 3
+		if (!variables.levelS.C3) {
+			line(500, 400, 300, 400);
+			triangle(400, 420, 440, 420, 420, 380);
+		}
+		//Center
+		if (!variables.levelS.CS) {
+			line(300, 400, 300, 300);
+			line(350, 300, 200, 300);
+			rect(280, 280, 40, 40);
+		}
+		//Dance
+		if (!variables.levelS.DS) {
+			line(300, 280, 300, 100);
+			rect(280, 150, 40, 40);
+		}
+		//Monkey
+		if (!variables.levelS.MS) {
+			line(200, 100, 200, 150);
+			rect(180, 80, 40, 40);
+		}
+		//Blue
+		if (!variables.levelS.BS) {
+			line(200, 300, 200, 400);
+			line(200, 400, 150, 400);
+			rect(180, 380, 40, 40);
+		}
+		//Caution
+		if (!variables.levelS.CAS) {
+			line(150, 400, 150, 150);
+			rect(130, 250, 40, 40);
+		}
+		//Ghost
+		if (!variables.levelS.GS) {
+			line(150, 150, 200, 150);
+			rect(130, 130, 40, 40);
+		}
+		//Lunarian HQ
+		if (!variables.levelS.LHQ) {
+			line(130, 270, 80, 270);
+			line(80, 270, 80, 200);
+			triangle(60, 220, 100, 220, 80, 180);
+		}
+	}
+
 	//quest menu
-	/*
 	if (menu == 'quest') {
 		background(140);
 
 		fill(0);
 		textSize(30);
 		text("No quests yet!", 150, 200);
-	}*/
+	}
 
 	//shows death screen
 	if (menu == 'dead') {
@@ -1777,7 +2001,7 @@ function draw() {
 	}
 
 	//enemy creator
-	if (menu == false) {
+	if (menu == false && currentStage.enemies != undefined) {
 		currentStage.enemies.forEach(function(ele) {
 			if (ele.color == undefined) {
 				fill('red');
@@ -1791,6 +2015,8 @@ function draw() {
 			//just how the enemy looks
 			//rect((TLC.pos.x - offsetX - 1) * UNIT, (TLC.pos.y + offsetY - 1) * UNIT, UNIT * 2, UNIT * 2);
 			playerTurn(ele.pos.x, ele.pos.y, ele);
+
+			RunAI(ele);
 		});
 	}
 
@@ -1891,11 +2117,49 @@ function draw() {
 		}
 	}
 
-	//runs enemy ai
-	if (menu == false) {
-		currentStage.enemies.forEach(function(ele) {
-			RunAI(ele);
-		});
+	//fully automatic weapon handeler
+	if (mouseIsPressed && !menu && player.weapon != undefined && player.weapon.type == 'full automatic' && textBox == undefined) {
+		player.weapon.cooldown--;
+		if (player.weapon != undefined && player.weapon.cooldown <= 0) {
+			console.log('test')
+			let xx = X;
+			let yy = Y;
+
+			let x;
+			let y;
+			if (player.direction == 'UP') {
+				x = xx;
+				y = yy - 2;
+			} else if (player.direction == 'DOWN') {
+				x = xx - 1;
+				y = yy + 1;
+			} else if (player.direction == 'RIGHT') {
+				x = xx + 1;
+				y = yy;
+			} else if (player.direction == 'LEFT') {
+				x = xx - 2;
+				y = yy - 1;
+			}
+
+			let data = {
+				dmg: player.weapon.dmg,
+				id: socket.id,
+				direction: player.direction,
+				pos: {
+					x: x,
+					y: y,
+				},
+				type: 'bullet',
+			}
+
+			if (player.energy >= player.weapon.energy) {
+				entities.push(data);
+				socket.emit('attack', data);
+				player.energy -= player.weapon.energy;
+				//console.log(data.pos.x + ", " + data.pos.y);
+			}
+			player.weapon.cooldown = player.weapon.max_cooldown;
+		}
 	}
 
 	mouseTurn();
@@ -2008,7 +2272,7 @@ function draw() {
 		} else if ((ele.pos.x == 7 || ele.pos.x == 6) && (ele.pos.y == 7 || ele.pos.y == 6)) {
 			player.HP -= ele.dmg;
 			entities = ArrayRemove(entities, ele);
-			if(player.HP <= 0){
+			if (player.HP <= 0) {
 				menu = 'dead';
 			}
 		}
@@ -2062,37 +2326,53 @@ function draw() {
 			if (keyIsDown(LEFT_ARROW)) {
 				let l = Colide('LEFT');
 				if (X != (BOXW - 1) && !l) {
-					entitiesMove('x', 'M');
-					player.pos.x--;
-					playerMoved('x', 'M');
-					TLC.pos.x++;
+					if (moveTimer <= 0) {
+						player.pos.x -= 1;
+						moveTimer = MT;
+						server.playerMoved('x', 'M');
+						TLC.pos.x++;
+						entitiesMove('x', 'M');
+					}
+					moveTimer -= 1;
 				}
 			}
 			if (keyIsDown(RIGHT_ARROW)) {
 				let r = Colide('RIGHT');
 				if (X != WIDTH - 1 && r != true) {
-					entitiesMove('x', 'P');
-					player.pos.x++;
-					playerMoved('x', 'P');
-					TLC.pos.x--;
+					if (moveTimer <= 0) {
+						player.pos.x += 1;
+						moveTimer = MT;
+						server.playerMoved('x', 'P');
+						TLC.pos.x--;
+						entitiesMove('x', 'P');
+					}
+					moveTimer -= 1;
 				}
 			}
 			if (keyIsDown(UP_ARROW)) {
 				let u = Colide('UP');
 				if (Y != (BOXH - 1) && u != true) {
-					entitiesMove('y', 'M');
-					player.pos.y--;
-					playerMoved('y', 'M');
-					TLC.pos.y++;
+					if (moveTimer <= 0) {
+						player.pos.y -= 1;
+						moveTimer = MT;
+						server.playerMoved('y', 'M');
+						TLC.pos.y++;
+						entitiesMove('y', 'M');
+					}
+					moveTimer -= 1;
 				}
 			}
 			if (keyIsDown(DOWN_ARROW)) {
 				let d = Colide('DOWN');
 				if (Y != HEIGHT - 1 && d != true) {
-					entitiesMove('y', 'P');
-					player.pos.y++;
-					playerMoved('y', 'P');
-					TLC.pos.y--;
+					if (moveTimer <= 0) {
+						player.pos.y += 1;
+						moveTimer = MT;
+						server.playerMoved('y', 'P');
+						TLC.pos.y--;
+						entitiesMove('y', 'P');
+					}
+					moveTimer -= 1;
 				}
 			}
 		}
@@ -2101,37 +2381,53 @@ function draw() {
 			if (keys['d'] == true) {
 				let r = Colide('RIGHT');
 				if (X != WIDTH - 1 && !r) {
-					entitiesMove('x', 'P');
-					player.pos.x++;
-					playerMoved('x', 'P');
-					TLC.pos.x--;
+					if (moveTimer <= 0) {
+						player.pos.x += 1;
+						moveTimer = MT;
+						server.playerMoved('x', 'P');
+						TLC.pos.x--;
+						entitiesMove('x', 'P');
+					}
+					moveTimer -= 1;
 				}
 			}
 			if (keys['a'] == true) {
 				let l = Colide('LEFT');
 				if (X != (BOXW - 1) && !l) {
-					entitiesMove('x', 'M');
-					player.pos.x--;
-					playerMoved('x', 'M');
-					TLC.pos.x++;
+					if (moveTimer <= 0) {
+						player.pos.x -= 1;
+						moveTimer = MT;
+						server.playerMoved('x', 'M');
+						TLC.pos.x++;
+						entitiesMove('x', 'M');
+					}
+					moveTimer -= 1;
 				}
 			}
 			if (keys['s'] == true) {
 				let d = Colide('DOWN');
 				if (Y != HEIGHT - 1 && !d) {
-					entitiesMove('y', 'P');
-					player.pos.y++;
-					playerMoved('y', 'P');
-					TLC.pos.y--;
+					if (moveTimer <= 0) {
+						player.pos.y += 1;
+						moveTimer = MT;
+						server.playerMoved('y', 'P');
+						TLC.pos.y--;
+						entitiesMove('y', 'P');
+					}
+					moveTimer -= 1;
 				}
 			}
 			if (keys['w'] == true) {
 				let u = Colide('UP');
 				if (Y != (BOXH - 1) && !u) {
-					entitiesMove('y', 'M');
-					player.pos.y--;
-					playerMoved('y', 'M');
-					TLC.pos.y++;
+					if (moveTimer <= 0) {
+						player.pos.y -= 1;
+						moveTimer = MT;
+						server.playerMoved('y', 'M');
+						TLC.pos.y++;
+						entitiesMove('y', 'M');
+					}
+					moveTimer -= 1;
 				}
 			}
 		}
@@ -2140,11 +2436,12 @@ function draw() {
 	thing = TLC;
 
 	bulletsMove();
-	playerMoved();
+	server.playerMoved();
 }
 
 
 function mousePressed() {
+
 	//text test button
 	if (mouseX > buttons.text_test.x + buttons.text_test.width - 64 && mouseX < buttons.text_test.x + buttons.text_test.width && mouseY > buttons.text_test.y - buttons.text_test.height + 64 && mouseY < buttons.text_test.y + buttons.text_test.height && menu == 'pause' && textBox == undefined) {
 		if (textBox == undefined) {
@@ -2179,6 +2476,14 @@ function mousePressed() {
 		}
 	}
 
+	if (menu == 'levelS') {
+		//training
+		if (mouseX > 550 + 40 - 64 && mouseX < 550 + 40 && mouseY > 300 - 40 + 64 && mouseY < 300 + 40) { }
+
+		//Faster Blaster
+		if (mouseX > 480 + 40 - 64 && mouseX < 480 + 40 && mouseY > 180 - 40 + 64 && mouseY < 180 + 40) { }
+	}
+
 	//quest button
 	/*
 		if (mouseX > buttons.quest.x + buttons.quest.width - 128 && mouseX < buttons.quest.x + buttons.quest.width && mouseY > buttons.quest.y - buttons.quest.height - 128 && mouseY < buttons.quest.y + buttons.quest.height && menu == false && textBox == undefined) {
@@ -2189,50 +2494,52 @@ function mousePressed() {
 function mouseReleased() {
 	let TLC = thing;
 
-	if (menu == false && textBox == undefined && player.weapon != undefined) {
-		let xx = X;
-		let yy = Y;
+	if (player.weapon.type == 'charger') {
+		if (menu == false && textBox == undefined && player.weapon != undefined) {
+			let xx = X;
+			let yy = Y;
 
-		let x;
-		let y;
-		if (player.direction == 'UP') {
-			x = xx;
-			y = yy - 2;
-		} else if (player.direction == 'DOWN') {
-			x = xx - 1;
-			y = yy + 1;
-		} else if (player.direction == 'RIGHT') {
-			x = xx + 1;
-			y = yy;
-		} else if (player.direction == 'LEFT') {
-			x = xx - 2;
-			y = yy - 1;
-		}
+			let x;
+			let y;
+			if (player.direction == 'UP') {
+				x = xx;
+				y = yy - 2;
+			} else if (player.direction == 'DOWN') {
+				x = xx - 1;
+				y = yy + 1;
+			} else if (player.direction == 'RIGHT') {
+				x = xx + 1;
+				y = yy;
+			} else if (player.direction == 'LEFT') {
+				x = xx - 2;
+				y = yy - 1;
+			}
 
-		let data = {
-			dmg: charge + player.weapon.dmg,
-			id: socket.id,
-			direction: player.direction,
-			pos: {
-				x: x,
-				y: y,
-			},
-			type: 'bullet',
-		}
+			let data = {
+				dmg: charge + player.weapon.dmg,
+				id: socket.id,
+				direction: player.direction,
+				pos: {
+					x: x,
+					y: y,
+				},
+				type: 'bullet',
+			}
 
-		if (player.energy >= player.weapon.energy) {
-			entities.push(data);
-			socket.emit('attack', data);
-			player.energy -= player.weapon.energy;
-			//console.log(data.pos.x + ", " + data.pos.y);
+			if (player.energy >= player.weapon.energy) {
+				entities.push(data);
+				socket.emit('attack', data);
+				player.energy -= player.weapon.energy;
+				//console.log(data.pos.x + ", " + data.pos.y);
+			}
+			charge = 0;
 		}
-		charge = 0;
 	}
 }
 
 function keyReleased() {
 	//pause menu
-	if (key === 'p' && menu != 'quest' && menu != 'main' && textBox == undefined) {
+	if (key === 'p' && (menu == 'pause' || menu == false) && textBox == undefined) {
 		if (menu == false) {
 			menu = 'pause';
 		} else {

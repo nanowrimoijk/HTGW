@@ -9,8 +9,6 @@ console.log("My socket server is running!");
 const socket = require('socket.io');
 const io = socket(server);
 
-console.clear();
-
 io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
@@ -51,3 +49,5 @@ function newConnection(socket) {
 		socket.broadcast.emit('bulletHit', data);
 	}
 }
+
+console.clear();
