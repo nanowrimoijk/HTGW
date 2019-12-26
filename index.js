@@ -14,7 +14,7 @@ io.sockets.on('connection', newConnection);
 function newConnection(socket) {
 	socket.on('disconnecting', newDisconnect);
 
-	var data2 = {
+	let data2 = {
 		id: socket.id, 
 	}
 
@@ -49,3 +49,5 @@ function newConnection(socket) {
 		socket.broadcast.emit('bulletHit', data);
 	}
 }
+
+console.clear();
