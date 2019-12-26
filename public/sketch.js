@@ -325,7 +325,7 @@ let weapons = {
 			energy: 20,
 			range: 6.5,
 			cooldown: 7,
-			max_cooldown: 6, 
+			max_cooldown: 6,
 			type: 'full automatic',
 		}
 	}
@@ -338,7 +338,7 @@ let player = {
 	direction: 'UP', //UP, DOWN, RIGHT, or LEFT
 	PM: 'P',
 	xy: 'x',
-	HP: 300,
+	HP: Infinity,//300
 	weapon: weapons.tiger.Hytex,
 	energy: 5000,
 }
@@ -836,15 +836,442 @@ let levels = {
 			},
 		},
 		FS: {
-			name: "Faster Blaster Station",
-			HEIGHT: 20,
-			WIDTH: 20,
-			walls: [],
-			enemies: [],
-			back: 230,
-			Sx: 0,
-			Sy: 0,
-		}
+			R1: {
+				name: "Faster Blaster Station Room 1",
+				HEIGHT: 15,
+				WIDTH: 15,
+				walls: [
+					{
+						name: "R1 - R2",
+						type: 'door',
+						pos: {
+							x: 13,
+							y: 7,
+						},
+						color: 'green',
+					},
+				],
+				enemies: [],
+				back: 230,
+				Sx: 0,
+				Sy: 1,
+			},
+			R2: {
+				name: "Faster Blaster Station Room 2",
+				HEIGHT: 30,
+				WIDTH: 30,
+				walls: [
+					//doors
+					{
+						name: "R2 - R1",
+						type: 'door',
+						pos: {
+							x: 1,
+							y: 14,
+						},
+						color: 'beige',
+					},
+					{
+						name: "R2 - R3",
+						type: 'door',
+						pos: {
+							x: 28,
+							y: 14,
+						},
+						color: 'beige',
+					},
+					{
+						name: "R2 - R4",
+						type: 'door',
+						pos: {
+							x: 15,
+							y: 28,
+						},
+						color: 'beige',
+					},
+					//walls
+					//	center
+					{
+						type: 'wall',
+						pos: {
+							x: 15,
+							y: 15,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 16,
+							y: 15,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 15,
+							y: 14,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 16,
+							y: 14,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 16,
+							y: 13,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 15,
+							y: 13,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 16,
+							y: 16,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 15,
+							y: 16,
+						},
+						color: 'grey',
+					},
+					//	bottom left
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 20,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 20,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 21,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 21,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 22,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 22,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 23,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 23,
+						},
+						color: 'grey',
+					},
+					//	bottom right
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 23,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 23,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 22,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 22,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 21,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 21,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 20,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 20,
+						},
+						color: 'grey',
+					},
+					//	top right
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 9,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 9,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 8,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 8,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 7,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 7,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 22,
+							y: 6,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 23,
+							y: 6,
+						},
+						color: 'grey',
+					},
+					//	top left
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 9,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 9,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 8,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 8,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 7,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 7,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 8,
+							y: 6,
+						},
+						color: 'grey',
+					},
+					{
+						type: 'wall',
+						pos: {
+							x: 7,
+							y: 6,
+						},
+						color: 'grey',
+					},
+					//enemy
+					{
+						name: 'enemy1-BR',
+						id: 'enemy1',
+						type: 'enemy',
+						pos: { x: 25, y: 15 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'enemy1-BL',
+						id: 'enemy1',
+						type: 'enemy',
+						pos: { x: 24, y: 15 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'enemy1-TR',
+						id: 'enemy1',
+						type: 'enemy',
+						pos: { x: 25, y: 14 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'enemy1-TL',
+						id: 'enemy1',
+						type: 'enemy',
+						pos: { x: 24, y: 14 },
+						color: 'red',
+						HP: 300,
+					},
+				],
+				enemies: [
+					{
+						name: 'enemy1',
+						id: 'enemy1',
+						type: 'enemy',
+						moveAI: 'basic',
+						attackAI: 'calm',
+						weapon: weapons.lunarshot.Lunarian,
+						charge: 0,
+						cooldown: 100,
+						preset: undefined,
+						timer: 100,
+						pos: { x: 25, y: 15 },
+						direction: 'DOWN',
+						color: 'red',
+						HP: 300,
+					},
+				],
+				back: 230,
+				Sx: -4,
+				Sy: 0, // 9
+			},
+		},
 	},
 }
 
@@ -869,10 +1296,10 @@ let screenHeight = 550; //default: 480
 let event = "start1t"; //default: 'start1'
 let menu = false; //default: 'main'
 let devTools = false; //default: false
-let currentStage = levels.chapter1.tutorial.lv2; //default: levels.prologue.hall
+let currentStage = levels.chapter1.FS.R2; //default: levels.prologue.hall
 let entities;
 
-UNIT = 32;//default: 32
+UNIT = 16;//default: 32
 let WIDTH = currentStage.WIDTH;
 let HEIGHT = currentStage.HEIGHT;
 const BOXW = 2;
@@ -881,6 +1308,8 @@ let X = player.pos.x;
 let Y = player.pos.y;
 let moveTimer = 2;
 let MT = 2;
+
+let charge = 0;
 
 let stageChanged = true; //default: true
 
@@ -1092,6 +1521,9 @@ let variables = {
 	},
 }
 
+let x;
+let y;
+
 //let chatX = 10;
 //let chatY = 10;
 
@@ -1135,84 +1567,35 @@ let buttons = {
 let doors = [
 	chris_office = {
 		name: "Chris's office",
-		x: 7,
-		y: 1,
+		pos: {
+			x: 4,
+			y: 1,
+		},
 		room: levels.prologue.hall,
 		target: levels.prologue.office,
 	},
+	FS_R1_R2 = {
+		name: "Chris's office",
+		pos: {
+			x: 14,
+			y: 7,
+		},
+		room: levels.chapter1.FS.R1,
+		target: levels.chapter1.FS.R2,
+	},
 ];
-
-let charge = 0;
 
 
 //runs the different ai for the enemies
 function RunAI(enemy) {
+	//attack AI
 	if (enemy.attackAI == 'calm') {
 		if (enemy.weapon.type == 'charger' && menu == false) {
 			if (enemy.charge < enemy.weapon.max_charge) {
 				enemy.charge += 0.5;
 			}
 
-			if (enemy.timer <= 0) {
-				let num = Random(4);
-				if ((num == 0 && enemy.preset == undefined) || enemy.preset == 'LEFT') {
-					enemy.direction = 'LEFT';
-					enemy.timer = 100;
-					if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X <= enemy.pos.x) {
-						enemy.preset = 'LEFT';
-					} else {
-						enemy.preset = undefined;
-					}
-
-				} else if ((num == 1 && enemy.preset == undefined) || enemy.preset == 'DOWN') {
-					enemy.direction = 'DOWN';
-					enemy.timer = 100;
-					if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y >= enemy.pos.y) {
-						enemy.preset = 'DOWN';
-					} else {
-						enemy.preset = undefined;
-					}
-
-				} else if ((num == 2 && enemy.preset == undefined) || enemy.preset == 'RIGHT') {
-					enemy.direction = 'RIGHT';
-					enemy.timer = 100;
-					if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X >= enemy.pos.x) {
-						enemy.preset = 'RIGHT';
-					} else {
-						enemy.preset = undefined;
-					}
-
-				} else if ((num == 3 && enemy.preset == undefined) || enemy.preset == 'UP') {
-					enemy.direction = 'UP';
-					enemy.timer = 100;
-					if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y <= enemy.pos.y) {
-						enemy.preset = 'UP';
-					} else {
-						enemy.preset = undefined;
-					}
-
-				} else if (enemy.preset != undefined) {
-					switch (enemy.preset) {
-						case 'UP':
-							enemy.direction = 'UP';
-							break;
-						case 'DOWN':
-							enemy.direction = 'DOWN';
-							break;
-						case 'LEFT':
-							enemy.direction = 'LEFT';
-							break;
-						case 'RIGHT':
-							enemy.direction = 'RIGHT';
-							break;
-					}
-					enemy.preset = undefined;
-				}
-				//console.log(num);
-			}
-
 			enemy.cooldown -= 1;
-			enemy.timer -= 1;
 			//console.log(enemy.cooldown);
 
 			if ((enemy.direction == 'DOWN' && (X == enemy.pos.x || X == enemy.pos.x - 1) && Y >= enemy.pos.y) || (enemy.direction == 'LEFT' && (Y == enemy.pos.y || Y == enemy.pos.y - 1) && X <= enemy.pos.x) || (enemy.direction == 'UP' && (X == enemy.pos.x || enemy.pos.x + 1) && Y <= enemy.pos.y) || (enemy.direction == 'RIGHT' && (Y == enemy.pos.y || Y == enemy.pos.y + 1) && X >= enemy.pos.x)) {
@@ -1237,7 +1620,7 @@ function RunAI(enemy) {
 					}
 
 					let data = {
-						dmg: charge + enemy.weapon.dmg,
+						dmg: enemy.charge + enemy.weapon.dmg,
 						id: enemy.id,
 						direction: enemy.direction,
 						pos: {
@@ -1255,14 +1638,116 @@ function RunAI(enemy) {
 			}
 		}
 	}
+
+	//movement AI
+	if (enemy.moveAI == 'stationary') {
+		if (enemy.timer <= 0) {
+			let num = Random(4);
+			if ((num == 0 && enemy.preset == undefined) || enemy.preset == 'LEFT') {
+				enemy.direction = 'LEFT';
+				enemy.timer = 100;
+				if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X <= enemy.pos.x) {
+					enemy.preset = 'LEFT';
+				} else {
+					enemy.preset = undefined;
+				}
+
+			} else if ((num == 1 && enemy.preset == undefined) || enemy.preset == 'DOWN') {
+				enemy.direction = 'DOWN';
+				enemy.timer = 100;
+				if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y >= enemy.pos.y) {
+					enemy.preset = 'DOWN';
+				} else {
+					enemy.preset = undefined;
+				}
+
+			} else if ((num == 2 && enemy.preset == undefined) || enemy.preset == 'RIGHT') {
+				enemy.direction = 'RIGHT';
+				enemy.timer = 100;
+				if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X >= enemy.pos.x) {
+					enemy.preset = 'RIGHT';
+				} else {
+					enemy.preset = undefined;
+				}
+
+			} else if ((num == 3 && enemy.preset == undefined) || enemy.preset == 'UP') {
+				enemy.direction = 'UP';
+				enemy.timer = 100;
+				if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y <= enemy.pos.y) {
+					enemy.preset = 'UP';
+				} else {
+					enemy.preset = undefined;
+				}
+
+			} else if (enemy.preset != undefined) {
+				switch (enemy.preset) {
+					case 'UP':
+						enemy.direction = 'UP';
+						break;
+					case 'DOWN':
+						enemy.direction = 'DOWN';
+						break;
+					case 'LEFT':
+						enemy.direction = 'LEFT';
+						break;
+					case 'RIGHT':
+						enemy.direction = 'RIGHT';
+						break;
+				}
+				enemy.preset = undefined;
+			}
+			//console.log(num);
+		}
+		enemy.timer -= 1;
+	}
+
+	if (enemy.moveAI == 'basic') {
+		x = enemy.pos.x + 2;
+		y = enemy.pos.y + 2;
+
+		let z = X;
+		let w = Y;
+		console.log(`you: ${z}, ${w}`);
+		console.log(`them: ${x}, ${y}`);
+
+		if(x < z){
+			if(y < w){
+				if(y + 8 > x){
+					enemy.direction = 'RIGHT';
+				}else if(y < x){
+					enemy.direction = 'DOWN';
+				}
+			}else if(y > w){
+				if(y - 8 < x){
+					enemy.direction = 'RIGHT';
+				}else if(y > x){
+					enemy.direction = 'UP';
+				}
+			}
+		}else if(x > z){
+			if(y < w){
+				if(y > x){
+					enemy.direction = 'LEFT';
+				}else if(y < x){
+					enemy.direction = 'DOWN';
+				}
+			}else if(y > w){
+				if(y < x){
+					enemy.direction = 'LEFT';
+				}else if(y > x){
+					enemy.direction = 'UP';
+				}
+			}
+		}
+	}
 }
 
-//checks player's cordinates and teleports player to correct room
+//checks player's cordinates and teleports player to correct map
 function checkDoors() {
 	doors.forEach(function(ele) {
 		if (currentStage == ele.room) {
-			if (player.pos.x == ele.x) {
-				if (player.pos.y == ele.y) {
+			if (player.pos.x == ele.pos.x) {
+				if (player.pos.y == ele.pos.y) {
 					currentStage = ele.target;
 					stageChanged = true;
 				}
@@ -2190,8 +2675,7 @@ function draw() {
 	function mouseTurn() {
 		let z = UNIT * 15 - mouseX;
 		let w = UNIT * 15 - mouseY;
-		//let y;
-		//let x;
+
 		if (mouseY > z) {
 			if (mouseY <= mouseX && mouseX > (UNIT * 15) / 2) {
 				player.direction = 'RIGHT';
