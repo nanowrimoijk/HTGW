@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 const server = app.listen(4000);
 
-app.use(express.static('public'));
+const Discord = require('discord.js');
+const client = new Discord.Client();
+const token = process.env.DISCORD_BOT_SECRET;
 
-console.log("My socket server is running!");
+app.use(express.static('public'));
 
 const socket = require('socket.io');
 const io = socket(server);
@@ -51,3 +53,17 @@ function newConnection(socket) {
 }
 
 console.clear();
+
+console.log("server is online");
+
+
+
+client.on('ready', () => {
+	console.log(`${client.user.username} is online`);
+
+	let guild = client.guilds.get('597847631045328923');
+	let channel = guild.channels.get('662880113423286311');
+	channel.send(`${client.user.username} is online`);
+});
+
+client.login(token);

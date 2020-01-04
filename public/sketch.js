@@ -257,6 +257,7 @@ class Server {
 }
 
 let weapons = {
+	//shooters
 	lunarshot: {
 		Hytex: {
 			dmg: 27,
@@ -279,6 +280,15 @@ let weapons = {
 			range: 6,
 			type: 'charger',
 		}
+	},
+	lunarshot2K: {
+		Lunarian: {
+			dmg: 65,
+			energy: 20,
+			max_charge: 50,
+			range: 4,
+			type: 'charger',
+		},
 	},
 	atlas: {
 		Hytex: {
@@ -319,27 +329,195 @@ let weapons = {
 			type: 'charger',
 		},
 	},
+	//snipers
+	sniper360: {
+		Lunarian: {
+			dmg: 100,
+			energy: 60,
+			max_charge: 95,
+			range: 9,
+			type: 'charger',
+		},
+		Linthorium: {
+			dmg: 120,
+			energy: 60,
+			max_charge: 50,
+			range: 10,
+			type: 'charger',
+		},
+	},
+	no_scope360: {
+		Linthorium: {
+			dmg: 150,
+			energy: 60,
+			max_charge: 40,
+			range: 8,
+			type: 'charger',
+		},
+	},
+	bow: {
+		NRG: {
+			dmg: 100,
+			energy: 50,
+			max_charge: 60,
+			range: 9,
+			type: 'charger',
+		},
+	},
+	tri_compound: {
+		NRG: {
+			dmg: 10,
+			energy: 70,
+			max_charge: 75,
+			range: 9,
+			type: 'charger',
+		},
+	},
+	//side arms
+	lunav: {
+		Lunarian: {
+			dmg: 20,
+			energy: 5,
+			max_charge: 65,
+			range: 4,
+			type: 'charger',
+		},
+		Hytex: {
+			dmg: 25,
+			energy: 5,
+			max_charge: 80,
+			range: 5,
+			type: 'charger',
+		},
+		Linthorium: {
+			dmg: 30,
+			energy: 10,
+			max_charge: 60,
+			range: 5.5,
+			type: 'charger',
+		},
+	},
+	perl: {
+		Hytex: {
+			dmg: 30,
+			energy: 15,
+			max_charge: 60,
+			range: 3,
+			type: 'charger',
+		},
+		Hurricane: {
+			dmg: 20,
+			energy: 15,
+			max_charge: 80,
+			range: 5.5,
+			type: 'charger',
+		},
+		NRG: {
+			dmg: 25,
+			energy: 10,
+			max_charge: 75,
+			range: 4,
+			type: 'charger',
+		},
+	},
+	//blasters
+	mint260: {
+		Hytex: {
+			dmg: 80,
+			energy: 50,
+			cooldown: 15,
+			max_cooldown: 15,
+			range: 4.5,
+			type: 'semi automatic',
+		},
+		Linthorium: {
+			dmg: 100,
+			energy: 65,
+			cooldown: 20,
+			max_cooldown: 20,
+			range: 6,
+			type: 'semi automatic',
+		},
+	},
+	ruby: {
+		NRG: {
+			dmg: 130,
+			energy: 50,
+			cooldown: 15,
+			max_cooldown: 15,
+			range: 5,
+			type: 'semi automatic',
+		},
+		Hurricane: {
+			dmg: 110,
+			energy: 50,
+			cooldown: 20,
+			max_cooldown: 20,
+			range: 6,
+			type: 'semi automatic',
+		},
+	},
+	//full autos
 	tiger: {
 		Hytex: {
 			dmg: 25,
 			energy: 20,
 			range: 6.5,
-			cooldown: 7,
+			cooldown: 6,
 			max_cooldown: 6,
 			type: 'full automatic',
 		}
-	}
+	},
+	silma: {
+		Hytex: {
+			dmg: 30,
+			energy: 10,
+			cooldown: 4,
+			max_cooldown: 4,
+			range: 5,
+			type: 'full automatic',
+		},
+		NRG: {
+			dmg: 40,
+			energy: 20,
+			cooldown: 4,
+			max_cooldown: 4,
+			range: 3.5,
+			type: 'full automatic',
+		},
+	},
+	//gatlings
+	gatling: {
+		Hurricane: {
+			dmg: 70,
+			energy: 20,
+			max_charge: 50,
+			cooldown: 15,
+			max_cooldown: 15,
+			range: 8,
+			type: 'gatling',
+		},
+		Hytex: {
+			dmg: 50,
+			energy: 10,
+			max_charge: 50,
+			cooldown: 15,
+			max_cooldown: 15,
+			range: 6,
+			type: 'gatling',
+		},
+	},
 }
 
 let player = {
 	type: 'player',
-	pos: { x: 7, y: 7 },
+	pos: { x: 2, y: 8 },
 	color: 'blue',
 	direction: 'UP', //UP, DOWN, RIGHT, or LEFT
 	PM: 'P',
 	xy: 'x',
-	HP: Infinity,//300
-	weapon: weapons.tiger.Hytex,
+	HP: 300,//300
+	weapon: weapons.mint260.Hytex,
 	energy: 5000,
 }
 
@@ -1293,19 +1471,19 @@ let thing = {
 let screenWidth = 600; //default: 480
 let screenHeight = 550; //default: 480
 
-let event = "start1t"; //default: 'start1'
+let event = "start1"; //default: 'start1'
 let menu = false; //default: 'main'
 let devTools = false; //default: false
-let currentStage = levels.chapter1.FS.R2; //default: levels.prologue.hall
+let currentStage = levels.prologue.hall; //default: levels.prologue.hall
 let entities;
 
-UNIT = 16;//default: 32
+UNIT = 32;//default: 32
 let WIDTH = currentStage.WIDTH;
 let HEIGHT = currentStage.HEIGHT;
 const BOXW = 2;
 const BOXH = 2;
-let X = player.pos.x;
-let Y = player.pos.y;
+let X = 7;
+let Y = 7;
 let moveTimer = 2;
 let MT = 2;
 
@@ -1313,7 +1491,7 @@ let charge = 0;
 
 let stageChanged = true; //default: true
 
-let online = false; //default: true
+let online = false; //default: false
 let server = new Server;
 
 let playerList = [
@@ -1332,7 +1510,7 @@ let playerList = [
 	Chris = {
 		type: 'player',
 		pos: {
-			x: 3,
+			x: 4,
 			y: -3,
 		},
 		id: 'Chris',
@@ -1344,7 +1522,7 @@ let playerList = [
 	Spencer = {
 		type: 'player',
 		pos: {
-			x: -3,
+			x: -2,
 			y: -2,
 		},
 		id: 'Spencer',
@@ -1356,7 +1534,7 @@ let playerList = [
 	Ray = {
 		type: 'player',
 		pos: {
-			x: -3,
+			x: -2,
 			y: 0,
 		},
 		id: 'Ray',
@@ -1501,7 +1679,7 @@ let variables = {
 			text8: false,
 		},
 	},
-	levelS: {
+	levels: {
 		FBS: false,
 		RS: false,
 		C1: false,
@@ -1568,14 +1746,14 @@ let doors = [
 	chris_office = {
 		name: "Chris's office",
 		pos: {
-			x: 4,
-			y: 1,
+			x: -1,
+			y: 2,
 		},
 		room: levels.prologue.hall,
 		target: levels.prologue.office,
 	},
 	FS_R1_R2 = {
-		name: "Chris's office",
+		name: "Faster Blaster Station R1-R2",
 		pos: {
 			x: 14,
 			y: 7,
@@ -1710,35 +1888,39 @@ function RunAI(enemy) {
 		console.log(`you: ${z}, ${w}`);
 		console.log(`them: ${x}, ${y}`);
 
-		if(x < z){
-			if(y < w){
-				if(y + 8 > x){
+		//turn system
+		if (x < z) {
+			if (y < w) {
+				if (y + 8 > x) {
 					enemy.direction = 'RIGHT';
-				}else if(y < x){
+				} else if (y < x) {
 					enemy.direction = 'DOWN';
 				}
-			}else if(y > w){
-				if(y - 8 < x){
+			} else if (y > w) {
+				if (y - 8 < x) {
 					enemy.direction = 'RIGHT';
-				}else if(y > x){
+				} else if (y > x) {
 					enemy.direction = 'UP';
 				}
 			}
-		}else if(x > z){
-			if(y < w){
-				if(y > x){
+		} else if (x > z) {
+			if (y < w) {
+				if (y > x) {
 					enemy.direction = 'LEFT';
-				}else if(y < x){
+				} else if (y < x) {
 					enemy.direction = 'DOWN';
 				}
-			}else if(y > w){
-				if(y < x){
+			} else if (y > w) {
+				if (y < x) {
 					enemy.direction = 'LEFT';
-				}else if(y > x){
+				} else if (y > x) {
 					enemy.direction = 'UP';
 				}
 			}
 		}
+
+		//movement system
+
 	}
 }
 
@@ -1746,6 +1928,8 @@ function RunAI(enemy) {
 function checkDoors() {
 	doors.forEach(function(ele) {
 		if (currentStage == ele.room) {
+			console.log(player.pos.x + ", " + ele.pos.x);
+			//console.log(currentStage == ele.room);
 			if (player.pos.x == ele.pos.x) {
 				if (player.pos.y == ele.pos.y) {
 					currentStage = ele.target;
@@ -2042,7 +2226,7 @@ function start() {
 
 let defeated = false;//default: false
 
-//runs the tutorial levels
+//runs the tutorial Levels
 function tutorial() {
 	if (event == 'tutorial1') {
 		currentStage = levels.chapter1.tutorial.lv1;
@@ -2234,59 +2418,59 @@ function draw() {
 		//Faster Blaster
 		rect(480, 180, 40, 40);
 		//checkpoint 1
-		if (!variables.levelS.C1) {
+		if (variables.levels.C1) {
 			line(500, 100, 200, 100);
 			triangle(360, 120, 400, 120, 380, 80);
 		}
 		//Red
-		if (!variables.levelS.RS) {
+		if (variables.levels.RS) {
 			line(480, 200, 350, 200);
 			rect(400, 180, 40, 40);
 		}
 		//checkpoint 2
-		if (!variables.levelS.C2) {
+		if (variables.levels.C2) {
 			line(350, 200, 350, 300);
 			triangle(330, 270, 370, 270, 350, 230);
 		}
 		//checkpoint 3
-		if (!variables.levelS.C3) {
+		if (variables.levels.C3) {
 			line(500, 400, 300, 400);
 			triangle(400, 420, 440, 420, 420, 380);
 		}
 		//Center
-		if (!variables.levelS.CS) {
+		if (variables.levels.CS) {
 			line(300, 400, 300, 300);
 			line(350, 300, 200, 300);
 			rect(280, 280, 40, 40);
 		}
 		//Dance
-		if (!variables.levelS.DS) {
+		if (variables.levels.DS) {
 			line(300, 280, 300, 100);
 			rect(280, 150, 40, 40);
 		}
 		//Monkey
-		if (!variables.levelS.MS) {
+		if (variables.levels.MS) {
 			line(200, 100, 200, 150);
 			rect(180, 80, 40, 40);
 		}
 		//Blue
-		if (!variables.levelS.BS) {
+		if (variables.levels.BS) {
 			line(200, 300, 200, 400);
 			line(200, 400, 150, 400);
 			rect(180, 380, 40, 40);
 		}
 		//Caution
-		if (!variables.levelS.CAS) {
+		if (variables.levels.CAS) {
 			line(150, 400, 150, 150);
 			rect(130, 250, 40, 40);
 		}
 		//Ghost
-		if (!variables.levelS.GS) {
+		if (variables.levels.GS) {
 			line(150, 150, 200, 150);
 			rect(130, 130, 40, 40);
 		}
 		//Lunarian HQ
-		if (!variables.levelS.LHQ) {
+		if (variables.levels.LHQ) {
 			line(130, 270, 80, 270);
 			line(80, 270, 80, 200);
 			triangle(60, 220, 100, 220, 80, 180);
