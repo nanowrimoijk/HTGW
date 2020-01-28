@@ -1,513 +1,8 @@
 let socket;
 
-class Server {
-	//creates a new character for each new player
-	newPlayer(data1) {
-
-		let TLC = thing;
-
-		if (online == true) {
-			let RC = Random(255);
-			let player0 = {
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data1.x,
-					y: TLC.pos.y + data1.y,
-				},
-				id: data1.id,
-				color: 'red',
-				direction: 'UP',
-				HP: 300,
-			}
-			let player0BR = {
-				name: 'BR',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data1.x,
-					y: TLC.pos.y + data1.y,
-				},
-				id: data1.id,
-				color: 'red',
-			}
-			let player0BL = {
-				name: 'BL',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data1.x - 1,
-					y: TLC.pos.y + data1.y,
-				},
-				id: data1.id,
-				color: 'red',
-			}
-			let player0TR = {
-				name: 'TR',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data1.x,
-					y: TLC.pos.y + data1.y - 1,
-				},
-				id: data1.id,
-				color: 'red',
-			}
-			let player0TL = {
-				name: 'TL',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data1.x - 1,
-					y: TLC.pos.y + data1.y - 1,
-				},
-				id: data1.id,
-				color: 'red',
-			}
-			playerList.push(player0);
-			entities.push(player0BR);
-			entities.push(player0BL);
-			entities.push(player0TR);
-			entities.push(player0TL);
-		}
-	}
-	//handles other player's movement data
-	newMove(data) {
-		let found = false;
-
-		let TLC = thing;
-
-		function moveP(element, data) {
-			if (data.xy == 'x') {
-				if (data.PM == 'P') {
-					element.pos.x++;
-				} else if (data.PM == 'M') {
-					element.pos.x--;
-				}
-			} else if (data.xy == 'y') {
-				if (data.PM == 'P') {
-					element.pos.y++;
-				} else if (data.PM == 'M') {
-					element.pos.y--;
-				}
-			} else if (data.xy == undefined) {
-				element.pos.x = element.pos.x;
-				element.pos.y = element.pos.y;
-			}
-			//console.log(element);
-		}
-
-		//checks playerList for the id of incoming player data
-		playerList.forEach(function(ele) {
-			if (ele.id == data.id) {
-				entities.forEach(function(element) {
-					if (element.id == data.id) {
-						moveP(element, data);
-					}
-				});
-				found = true;
-				moveP(ele, data);
-				ele.direction = data.direction;
-			}
-			if (ele.id == undefined) {
-				playerList = ArrayRemove(playerList, ele);
-			}
-		});
-
-		//if no player with the id is found then it creates one
-		if (found == false) {
-			//console.log(`socket ${data.id} not found`);
-			//console.log(`adding ${data.id} to player list`);
-			let player1 = {
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data.x,
-					y: TLC.pos.y + data.y,
-				},
-				id: data.id,
-				color: 'red',
-				HP: 300,
-			}
-			let player1BR = {
-				name: 'BR',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data.x,
-					y: TLC.pos.y + data.y,
-				},
-				id: data.id,
-				color: 'red',
-			}
-			let player1BL = {
-				name: 'BL',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data.x - 1,
-					y: TLC.pos.y + data.y,
-				},
-				id: data.id,
-				color: 'red',
-			}
-			let player1TR = {
-				name: 'TR',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data.x,
-					y: TLC.pos.y + data.y - 1,
-				},
-				id: data.id,
-				color: 'red',
-			}
-			let player1TL = {
-				name: 'TL',
-				type: 'player',
-				pos: {
-					x: TLC.pos.x + data.x - 1,
-					y: TLC.pos.y + data.y - 1,
-				},
-				id: data.id,
-				color: 'red',
-			}
-			playerList.push(player1);
-			entities.push(player1BR);
-			entities.push(player1BL);
-			entities.push(player1TR);
-			entities.push(player1TL);
-			//console.log(playerList);
-		}
-	}
-	//sends out this player's movement data
-	playerMoved(xy, PM) {
-		let data = {
-			PM: PM,
-			xy: xy,
-			id: socket.id,
-			direction: player.direction,
-			x: player.pos.x,
-			y: player.pos.y,
-		}
-
-		socket.emit('move', data);
-	}
-	//handles player disconnections
-	playerDisconnect(data2) {
-		playerList.forEach(function(ele) {
-			if (ele.id == data2.id) {
-				//console.log(playerList);
-				//console.log(data2.id);
-				playerList = ArrayRemove(playerList, ele);
-				//console.log(playerList);
-			}
-		});
-		entities.forEach(function(ele) {
-			if (ele.id == data2.id) {
-				entities = ArrayRemove(entities, ele);
-			}
-		});
-		//console.log(entities);
-		//console.log(playerList);
-	}
-	//handles new attacks from other players
-	newAttack(data) {
-		let TLC = thing;
-
-		let x;
-		let y;
-
-		entities.forEach(function(ele) {
-			if (ele.id == data.id) {
-				x = TLC.pos.x + ele.pos.x;
-				y = TLC.pos.y + ele.pos.y;
-			}
-		});
-
-		switch (data.direction) {
-			case 'UP':
-				y -= 2;
-				break;
-			case 'DOWN':
-				x -= 1;
-				y += 1;
-				break;
-			case 'RIGHT':
-				x += 1;
-				break;
-			case 'LEFT':
-				x -= 2;
-				y -= 1;
-		}
-
-		let Data = {
-			dmg: data.dmg,
-			id: data.id,
-			direction: data.direction,
-			pos: {
-				x: x,
-				y: y,
-			},
-			type: data.type,
-		}
-		entities.push(Data);
-	}
-	//lowers player's HP if attack matches id
-	lowerHealth(data) {
-		if (data.id == socket.id) {
-			player.HP -= data.dmg;
-			if (player.HP <= 0) {
-				menu = 'dead';
-				socket.disconnect();
-			}
-		}
-	}
-}
-
-let weapons = {
-	//shooters
-	lunarshot: {
-		Hytex: {
-			dmg: 27,
-			energy: 25,
-			max_charge: 60,
-			range: 4.5,
-			type: 'charger',
-		},
-		Lunarian: {
-			dmg: 25,
-			energy: 20,
-			max_charge: 70,
-			range: 5,
-			type: 'charger',
-		},
-		Hurricane: {
-			dmg: 22,
-			energy: 20,
-			max_charge: 70,
-			range: 6,
-			type: 'charger',
-		}
-	},
-	lunarshot2K: {
-		Lunarian: {
-			dmg: 65,
-			energy: 20,
-			max_charge: 50,
-			range: 4,
-			type: 'charger',
-		},
-	},
-	atlas: {
-		Hytex: {
-			dmg: 20,
-			energy: 15,
-			max_charge: 85,
-			range: 3.5,
-			type: 'charger',
-		},
-		Hurricane: {
-			dmg: 17,
-			energy: 20,
-			max_charge: 95,
-			range: 5,
-			type: 'charger',
-		},
-		Lunthorium: {
-			dmg: 17,
-			energy: 20,
-			max_charge: 85,
-			range: 6.5,
-			type: 'charger',
-		},
-	},
-	exo: {
-		Hytex: {
-			dmg: 30,
-			energy: 35,
-			max_charge: 65,
-			range: 6,
-			type: 'charger',
-		},
-		Linthorium: {
-			dmg: 37,
-			energy: 35,
-			max_charge: 60,
-			range: 7,
-			type: 'charger',
-		},
-	},
-	//snipers
-	sniper360: {
-		Lunarian: {
-			dmg: 100,
-			energy: 60,
-			max_charge: 95,
-			range: 9,
-			type: 'charger',
-		},
-		Linthorium: {
-			dmg: 120,
-			energy: 60,
-			max_charge: 50,
-			range: 10,
-			type: 'charger',
-		},
-	},
-	no_scope360: {
-		Linthorium: {
-			dmg: 150,
-			energy: 60,
-			max_charge: 40,
-			range: 8,
-			type: 'charger',
-		},
-	},
-	bow: {
-		NRG: {
-			dmg: 100,
-			energy: 50,
-			max_charge: 60,
-			range: 9,
-			type: 'charger',
-		},
-	},
-	tri_compound: {
-		NRG: {
-			dmg: 10,
-			energy: 70,
-			max_charge: 75,
-			range: 9,
-			type: 'charger',
-		},
-	},
-	//side arms
-	lunav: {
-		Lunarian: {
-			dmg: 20,
-			energy: 5,
-			max_charge: 65,
-			range: 4,
-			type: 'charger',
-		},
-		Hytex: {
-			dmg: 25,
-			energy: 5,
-			max_charge: 80,
-			range: 5,
-			type: 'charger',
-		},
-		Linthorium: {
-			dmg: 30,
-			energy: 10,
-			max_charge: 60,
-			range: 5.5,
-			type: 'charger',
-		},
-	},
-	perl: {
-		Hytex: {
-			dmg: 30,
-			energy: 15,
-			max_charge: 60,
-			range: 3,
-			type: 'charger',
-		},
-		Hurricane: {
-			dmg: 20,
-			energy: 15,
-			max_charge: 80,
-			range: 5.5,
-			type: 'charger',
-		},
-		NRG: {
-			dmg: 25,
-			energy: 10,
-			max_charge: 75,
-			range: 4,
-			type: 'charger',
-		},
-	},
-	//blasters
-	mint260: {
-		Hytex: {
-			dmg: 80,
-			energy: 50,
-			cooldown: 15,
-			max_cooldown: 15,
-			range: 4.5,
-			type: 'semi automatic',
-		},
-		Linthorium: {
-			dmg: 100,
-			energy: 65,
-			cooldown: 20,
-			max_cooldown: 20,
-			range: 6,
-			type: 'semi automatic',
-		},
-	},
-	ruby: {
-		NRG: {
-			dmg: 130,
-			energy: 50,
-			cooldown: 15,
-			max_cooldown: 15,
-			range: 5,
-			type: 'semi automatic',
-		},
-		Hurricane: {
-			dmg: 110,
-			energy: 50,
-			cooldown: 20,
-			max_cooldown: 20,
-			range: 6,
-			type: 'semi automatic',
-		},
-	},
-	//full autos
-	tiger: {
-		Hytex: {
-			dmg: 25,
-			energy: 20,
-			range: 6.5,
-			cooldown: 6,
-			max_cooldown: 6,
-			type: 'full automatic',
-		}
-	},
-	silma: {
-		Hytex: {
-			dmg: 30,
-			energy: 10,
-			cooldown: 4,
-			max_cooldown: 4,
-			range: 5,
-			type: 'full automatic',
-		},
-		NRG: {
-			dmg: 40,
-			energy: 20,
-			cooldown: 4,
-			max_cooldown: 4,
-			range: 3.5,
-			type: 'full automatic',
-		},
-	},
-	//gatlings
-	gatling: {
-		Hurricane: {
-			dmg: 70,
-			energy: 20,
-			max_charge: 50,
-			cooldown: 15,
-			max_cooldown: 15,
-			range: 8,
-			type: 'gatling',
-		},
-		Hytex: {
-			dmg: 50,
-			energy: 10,
-			max_charge: 50,
-			cooldown: 15,
-			max_cooldown: 15,
-			range: 6,
-			type: 'gatling',
-		},
-	},
-}
+let online = true; //default: false
+const server = new Server;
+const game = new Game;
 
 let player = {
 	type: 'player',
@@ -516,13 +11,30 @@ let player = {
 	direction: 'UP', //UP, DOWN, RIGHT, or LEFT
 	PM: 'P',
 	xy: 'x',
-	HP: 300,//300
-	weapon: weapons.mint260.Hytex,
+	HP: Infinity,//300
+	weapon: game.weapons.tiger.Hytex,
 	energy: 5000,
 }
 
 // all levels go in here
 let levels = {
+	test2: {
+		name: "test 2",
+		type: '2', 
+		back: '230', 
+		Sx: -2, 
+		Sy: -2, 
+		map: [
+			['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+			['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+			['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+			['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+			['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+			['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+			['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+			["w", "w", 'w', 'w', 'w', 'w', 'w', 'w'],
+		],
+	},
 	test: {
 		name: 'test',
 		HEIGHT: 16,
@@ -997,7 +509,7 @@ let levels = {
 						type: 'enemy',
 						moveAI: 'stationary',
 						attackAI: 'calm',
-						weapon: weapons.lunarshot.Lunarian,
+						weapon: game.weapons.lunarshot.Lunarian,
 						charge: 0,
 						cooldown: 100,
 						preset: undefined,
@@ -1026,7 +538,7 @@ let levels = {
 							x: 13,
 							y: 7,
 						},
-						color: 'green',
+						color: 'beige',
 					},
 				],
 				enemies: [],
@@ -1434,7 +946,9 @@ let levels = {
 						type: 'enemy',
 						moveAI: 'basic',
 						attackAI: 'calm',
-						weapon: weapons.lunarshot.Lunarian,
+						MT: 0,
+						max_MT: 15,
+						weapon: game.weapons.lunarshot.Lunarian,
 						charge: 0,
 						cooldown: 100,
 						preset: undefined,
@@ -1442,7 +956,7 @@ let levels = {
 						pos: { x: 25, y: 15 },
 						direction: 'DOWN',
 						color: 'red',
-						HP: 300,
+						HP: 150,
 					},
 				],
 				back: 230,
@@ -1471,15 +985,15 @@ let thing = {
 let screenWidth = 600; //default: 480
 let screenHeight = 550; //default: 480
 
-let event = "start1"; //default: 'start1'
+let event = "start1t"; //default: 'start1'
 let menu = false; //default: 'main'
 let devTools = false; //default: false
-let currentStage = levels.prologue.hall; //default: levels.prologue.hall
+let currentStage = levels.test2; //default: levels.prologue.hall
 let entities;
 
 UNIT = 32;//default: 32
-let WIDTH = currentStage.WIDTH;
-let HEIGHT = currentStage.HEIGHT;
+let WIDTH = 20;
+let HEIGHT = 20;
 const BOXW = 2;
 const BOXH = 2;
 let X = 7;
@@ -1490,9 +1004,6 @@ let MT = 2;
 let charge = 0;
 
 let stageChanged = true; //default: true
-
-let online = false; //default: false
-let server = new Server;
 
 let playerList = [
 	Adom = {
@@ -1742,28 +1253,6 @@ let buttons = {
 	},
 };
 
-let doors = [
-	chris_office = {
-		name: "Chris's office",
-		pos: {
-			x: -1,
-			y: 2,
-		},
-		room: levels.prologue.hall,
-		target: levels.prologue.office,
-	},
-	FS_R1_R2 = {
-		name: "Faster Blaster Station R1-R2",
-		pos: {
-			x: 14,
-			y: 7,
-		},
-		room: levels.chapter1.FS.R1,
-		target: levels.chapter1.FS.R2,
-	},
-];
-
-
 //runs the different ai for the enemies
 function RunAI(enemy) {
 	//attack AI
@@ -1885,8 +1374,8 @@ function RunAI(enemy) {
 
 		let z = X;
 		let w = Y;
-		console.log(`you: ${z}, ${w}`);
-		console.log(`them: ${x}, ${y}`);
+		//console.log(`you: ${z}, ${w}`);
+		//console.log(`them: ${x}, ${y}`);
 
 		//turn system
 		if (x < z) {
@@ -1919,25 +1408,193 @@ function RunAI(enemy) {
 			}
 		}
 
-		//movement system
+		let found = false;
 
-	}
-}
+		function enemyMove(poz, dir) {
+			found = false;
 
-//checks player's cordinates and teleports player to correct map
-function checkDoors() {
-	doors.forEach(function(ele) {
-		if (currentStage == ele.room) {
-			console.log(player.pos.x + ", " + ele.pos.x);
-			//console.log(currentStage == ele.room);
-			if (player.pos.x == ele.pos.x) {
-				if (player.pos.y == ele.pos.y) {
-					currentStage = ele.target;
-					stageChanged = true;
-				}
+			if (dir == 'UP') {
+				entities.forEach(function(ele) {
+					if (ele.pos.y == poz.y - 3 || poz.y - 3 == player.pos.y) {
+						if (ele.pos.x == poz.x || poz.x == player.pos.x) {
+							found = true;
+						}
+					}
+				});
+
+			} else if (dir == 'DOWN') {
+				entities.forEach(function(ele) {
+					if (ele.pos.y == poz.y + 2 || poz.y + 2 == player.pos.y) {
+						if (ele.pos.x == poz.x || poz.x == player.pos.x) {
+							found = true;
+						}
+					}
+				});
+
+			} else if (dir == 'LEFT') {
+				entities.forEach(function(ele) {
+					if (ele.pos.x == poz.x - 3 || poz.x - 3 == player.pos.x) {
+						if (ele.pos.y == poz.y || poz.y == player.pos.y) {
+							found = true;
+						}
+					}
+				});
+
+			} else if (dir == 'RIGHT') {
+				entities.forEach(function(ele) {
+					if (ele.pos.x == poz.x + 2 || poz.x + 2 == player.pos.x) {
+						if (ele.pos.y == poz.y || poz.y == player.pos.y) {
+							found = true;
+						}
+					}
+				});
 			}
 		}
-	});
+
+		//movement system
+		if (enemy.MT == 0) {
+			if (enemy.direction == 'UP') {
+				enemyMove(enemy.pos, 'UP');
+
+				if (found == false) { // go up
+					enemy.pos.y -= 1;
+					currentStage.walls.forEach(function(ele) {
+						if (ele.id == enemy.id) {
+							ele.pos.y -= 1;
+						}
+					});
+
+				} else {
+					enemyMove(enemy.pos, 'LEFT');
+
+					if (found == false) {// if not then turn left
+						enemy.pos.x -= 1;
+						currentStage.walls.forEach(function(ele) {
+							if (ele.id == enemy.id) {
+								ele.pos.x -= 1;
+							}
+						});
+					} else {
+						enemyMove(enemy.pos, 'RIGHT');
+
+						if (found == false) {
+							enemy.pos.x += 1;
+							currentStage.walls.forEach(function(ele) {
+								if (ele.id == enemy.id) {
+									ele.pos.x += 1;
+								}
+							});
+						}
+					}
+				}
+			} else if (enemy.direction == 'DOWN') {
+				enemyMove(enemy.pos, 'DOWN');
+
+				if (found == false) { // go down
+					enemy.pos.y += 1;
+					currentStage.walls.forEach(function(ele) {
+						if (ele.id == enemy.id) {
+							ele.pos.y += 1;
+						}
+					});
+
+				} else {
+					enemyMove(enemy.pos, 'LEFT');
+
+					if (found == false) {// if not then turn left
+						enemy.pos.x -= 1;
+						currentStage.walls.forEach(function(ele) {
+							if (ele.id == enemy.id) {
+								ele.pos.x -= 1;
+							}
+						});
+					} else {
+						enemyMove(enemy.pos, 'RIGHT');
+
+						if (found == false) {
+							enemy.pos.x += 1;
+							currentStage.walls.forEach(function(ele) {
+								if (ele.id == enemy.id) {
+									ele.pos.x += 1;
+								}
+							});
+						}
+					}
+				}
+			} else if (enemy.direction == 'LEFT') {
+				enemyMove(enemy.pos, 'LEFT');
+
+				if (found == false) { // go left
+					enemy.pos.x -= 1;
+					currentStage.walls.forEach(function(ele) {
+						if (ele.id == enemy.id) {
+							ele.pos.x -= 1;
+						}
+					});
+
+				} else {
+					enemyMove(enemy.pos, 'UP');
+
+					if (found == false) {// if not then go up
+						enemy.pos.y -= 1;
+						currentStage.walls.forEach(function(ele) {
+							if (ele.id == enemy.id) {
+								ele.pos.y -= 1;
+							}
+						});
+					} else {
+						enemyMove(enemy.pos, 'DOWN');
+
+						if (found == false) {
+							enemy.pos.y += 1;
+							currentStage.walls.forEach(function(ele) {
+								if (ele.id == enemy.id) {
+									ele.pos.y += 1;
+								}
+							});
+						}
+					}
+				}
+			} else if (enemy.direction == 'RIGHT') {
+				enemyMove(enemy.pos, 'RIGHT');
+
+				if (found == false) { // go right
+					enemy.pos.x += 1;
+					currentStage.walls.forEach(function(ele) {
+						if (ele.id == enemy.id) {
+							ele.pos.x += 1;
+						}
+					});
+
+				} else {
+					enemyMove(enemy.pos, 'UP');
+
+					if (found == false) {// if not then go up
+						enemy.pos.y -= 1;
+						currentStage.walls.forEach(function(ele) {
+							if (ele.id == enemy.id) {
+								ele.pos.y -= 1;
+							}
+						});
+					} else {
+						enemyMove(enemy.pos, 'DOWN');
+
+						if (found == false) {
+							enemy.pos.y += 1;
+							currentStage.walls.forEach(function(ele) {
+								if (ele.id == enemy.id) {
+									ele.pos.y += 1;
+								}
+							});
+						}
+					}
+				}
+			}
+			enemy.MT = enemy.max_MT;
+		} else {
+			enemy.MT -= 1;
+		}
+	}
 }
 
 //moves entities when the player moves
@@ -2332,7 +1989,7 @@ function setup() {
 
 function draw() {
 	clear();
-	createCanvas(screenWidth, screenHeight);
+	createCanvas(windowWidth - 20, windowHeight - 20);
 	background(currentStage.back);
 
 	if (event.includes('start')) {
@@ -2346,7 +2003,7 @@ function draw() {
 		pos: { x: player.pos.x - 7, y: player.pos.y - 7 },
 	}
 
-	if (stageChanged == true) {
+	if (stageChanged == true && currentStage.type == undefined) {
 		entities = currentStage.walls;
 
 		//bottom boundaries
@@ -2389,21 +2046,39 @@ function draw() {
 			TLC.pos.x -= currentStage.Sx;
 		});
 
-		doors.forEach(function(ele) {
-			entities.forEach(function(elem) {
-				if (ele.name == elem.name) {
-					ele.x = elem.pos.x;
-					ele.y = elem.pos.y + 1;
-				}
-			});
-		});
-
 		if (currentStage.enemies != undefined) {
 			currentStage.enemies.forEach(function(ele) {
 				ele.pos.y -= currentStage.Sy;
 				ele.pos.x -= currentStage.Sx;
 			});
 		}
+
+		stageChanged = false;
+	}
+
+	if(stageChanged && currentStage.type == '2'){
+		entities = [];
+		for (y = 0; currentStage.map[y] != undefined; y++) {
+			for (x = 0; currentStage.map[y][x] != undefined; x++) {
+				if (currentStage.map[y][x] == 'w') {
+					entities.push({
+						type: 'wall',
+						pos: {
+							x: x,
+							y: y,
+						}, 
+						color: 'grey',
+					});
+				}
+			}
+		}
+
+		entities.forEach(function(ele) {
+			ele.pos.y -= currentStage.Sy;
+			ele.pos.x -= currentStage.Sx;
+			TLC.pos.y -= currentStage.Sy;
+			TLC.pos.x -= currentStage.Sx;
+		});
 
 		stageChanged = false;
 	}
@@ -2790,7 +2465,6 @@ function draw() {
 	if (mouseIsPressed && !menu && player.weapon != undefined && player.weapon.type == 'full automatic' && textBox == undefined) {
 		player.weapon.cooldown--;
 		if (player.weapon != undefined && player.weapon.cooldown <= 0) {
-			console.log('test')
 			let xx = X;
 			let yy = Y;
 
@@ -2831,8 +2505,13 @@ function draw() {
 		}
 	}
 
+	//semi automatic weaqpon handler
+	if (!menu && player.weapon != undefined && player.weapon.type == 'semi automatic' && textBox == undefined) {
+		player.weapon.cooldown -= 1;
+		console.log(player.weapon.cooldown);
+	}
+
 	mouseTurn();
-	checkDoors();
 
 	//checks for if a player is turning and then changes it's graphics
 	function playerTurn(x, y, object) {
@@ -3201,6 +2880,50 @@ function mouseReleased() {
 				//console.log(data.pos.x + ", " + data.pos.y);
 			}
 			charge = 0;
+		}
+	}
+
+	if (player.weapon.type == 'semi automatic') {
+		if (menu == false && textBox == undefined && player.weapon != undefined) {
+			if (player.weapon.cooldown <= 0) {
+				let xx = X;
+				let yy = Y;
+
+				let x;
+				let y;
+				if (player.direction == 'UP') {
+					x = xx;
+					y = yy - 2;
+				} else if (player.direction == 'DOWN') {
+					x = xx - 1;
+					y = yy + 1;
+				} else if (player.direction == 'RIGHT') {
+					x = xx + 1;
+					y = yy;
+				} else if (player.direction == 'LEFT') {
+					x = xx - 2;
+					y = yy - 1;
+				}
+
+				let data = {
+					dmg: player.weapon.dmg,
+					id: socket.id,
+					direction: player.direction,
+					pos: {
+						x: x,
+						y: y,
+					},
+					type: 'bullet',
+				}
+
+				if (player.energy >= player.weapon.energy) {
+					entities.push(data);
+					socket.emit('attack', data);
+					player.energy -= player.weapon.energy;
+					//console.log(data.pos.x + ", " + data.pos.y);
+					player.weapon.cooldown = player.weapon.max_cooldown;
+				}
+			}
 		}
 	}
 }
