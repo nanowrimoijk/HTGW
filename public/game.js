@@ -1,7 +1,7 @@
 class Game {
 	constructor() {
 		this.levels = {
-			test: {
+		  test: {
 				name: "test 2",
 				type: '2',
 				back: 230,

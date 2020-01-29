@@ -20,10 +20,10 @@ let player = {
 let levels = {
 	test2: {
 		name: "test 2",
-		type: '2', 
-		back: '230', 
-		Sx: -2, 
-		Sy: -2, 
+		type: '2',
+		back: '230',
+		Sx: -2,
+		Sy: -2,
 		map: [
 			['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
 			['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
@@ -35,14 +35,58 @@ let levels = {
 			["w", "w", 'w', 'w', 'w', 'w', 'w', 'w'],
 		],
 	},
-	test: {
-		name: 'test',
-		HEIGHT: 16,
-		WIDTH: 16,
-		walls: [],
-		back: 220,
-		Sx: 0,
-		Sy: 0,
+	prologue2: {
+		hall: {
+			name: "Hallway",
+			type: '2',
+			back: '230',
+			Sx: 1,
+			Sy: 0,
+			map: [
+				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', 'A', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+			],
+		},
+		office: {
+			name: "Chris's office",
+			type: '2',
+			back: '230',
+			Sx: 1,
+			Sy: 3,
+			map: [
+				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'C', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', 'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 't', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+			]
+		}
 	},
 	prologue: {
 		hall: {
@@ -985,13 +1029,13 @@ let thing = {
 let screenWidth = 600; //default: 480
 let screenHeight = 550; //default: 480
 
-let event = "start1t"; //default: 'start1'
+let event = "start1"; //default: 'start1'
 let menu = false; //default: 'main'
 let devTools = false; //default: false
-let currentStage = levels.test2; //default: levels.prologue.hall
+let currentStage = levels.prologue2.hall; //default: levels.prologue.hall
 let entities;
 
-UNIT = 32;//default: 32
+UNIT = 32; //default: 32
 let WIDTH = 20;
 let HEIGHT = 20;
 const BOXW = 2;
@@ -1009,25 +1053,25 @@ let playerList = [
 	Adom = {
 		type: 'player',
 		pos: {
-			x: 3,
+			x: 4,
 			y: 7,
 		},
 		id: 'Adom',
 		color: 'blue',
 		direction: 'RIGHT',
-		room: levels.prologue.hall,
+		room: levels.prologue2.hall,
 		HP: 300,
 	},
 	Chris = {
 		type: 'player',
 		pos: {
-			x: 4,
-			y: -3,
+			x: 7,
+			y: 2,
 		},
 		id: 'Chris',
 		color: 'green',
 		direction: 'DOWN',
-		room: levels.prologue.office,
+		room: levels.prologue2.office,
 		HP: 300,
 	},
 	Spencer = {
@@ -1072,10 +1116,6 @@ let messages = {
 		msg1: {
 			author: 'Adom',
 			message: "Now, she may seem intimidating or rude, but I \npromise you she won't hurt you."
-		},
-		msg2: {
-			author: 'Adom',
-			message: "Go on right through that door to see her.",
 		},
 		//office
 		msg3: {
@@ -1657,16 +1697,15 @@ function start() {
 			variables.prologue.text1 = true;
 		}
 		if (textBox == undefined) {
-			if (variables.prologue.text1 == true && variables.prologue.text2 == false) {
-				textBox = messages.prologue.msg2;
-				variables.prologue.text2 = true;
-			} else if (variables.prologue.text1 == true && variables.prologue.text2 == true) {
+			if (variables.prologue.text1 == true) {
 				textBox = undefined;
 				event = 'start2';
+				currentStage = levels.prologue2.office;
+				stageChanged = true;
 			}
 		}
 	} else if (event == 'start2') {
-		if (currentStage == levels.prologue.office) {
+		if (currentStage == levels.prologue2.office) {
 			//Adom
 			entities.push({
 				name: "Adom",
@@ -1710,7 +1749,7 @@ function start() {
 			});
 			playerList.forEach(function(ele) {
 				if (ele.id == 'Adom') {
-					ele.room = levels.prologue.office;
+					ele.room = levels.prologue2.office;
 					ele.pos.x = 1;
 					ele.pos.y = 7;
 				}
@@ -1790,7 +1829,7 @@ function start() {
 		});
 		playerList.forEach(function(ele) {
 			if (ele.id == 'Spencer') {
-				ele.room = levels.prologue.office;
+				ele.room = levels.prologue2.office;
 			}
 		});
 		//Ray
@@ -1836,7 +1875,7 @@ function start() {
 		});
 		playerList.forEach(function(ele) {
 			if (ele.id == 'Ray') {
-				ele.room = levels.prologue.office;
+				ele.room = levels.prologue2.office;
 			}
 		});
 
@@ -1888,7 +1927,7 @@ function tutorial() {
 	if (event == 'tutorial1') {
 		currentStage = levels.chapter1.tutorial.lv1;
 		stageChanged = true;
-		player.weapon = weapons.lunarshot.Hytex;
+		player.weapon = game.weapons.lunarshot.Hytex;
 		event = 'tutorial2';
 	} else if (event == 'tutorial2') {
 		if (variables.chapter1.tutorial.text1 == false) {
@@ -2056,7 +2095,7 @@ function draw() {
 		stageChanged = false;
 	}
 
-	if(stageChanged && currentStage.type == '2'){
+	if (stageChanged && currentStage.type == '2') {
 		entities = [];
 		for (y = 0; currentStage.map[y] != undefined; y++) {
 			for (x = 0; currentStage.map[y][x] != undefined; x++) {
@@ -2066,8 +2105,233 @@ function draw() {
 						pos: {
 							x: x,
 							y: y,
-						}, 
+						},
 						color: 'grey',
+					});
+				} else if (currentStage.map[y][x] == 'A') {
+					entities.push(
+						{
+							name: "Adom",
+							type: 'NPC',
+							id: 'AdomBR',
+							pos: {
+								x: x,
+								y: y,
+							},
+							color: 'blue',
+						},
+						{
+							name: "Adom",
+							type: 'NPC',
+							id: 'AdomBL',
+							pos: {
+								x: x - 1,
+								y: y,
+							},
+							color: 'blue',
+						},
+						{
+							name: "Adom",
+							type: 'NPC',
+							id: 'AdomTR',
+							pos: {
+								x: x,
+								y: y - 1,
+							},
+							color: 'blue',
+						},
+						{
+							name: "Adom",
+							type: 'NPC',
+							id: 'AdomTL',
+							pos: {
+								x: x - 1,
+								y: y - 1,
+							},
+							color: 'blue',
+						});
+				} else if (currentStage.map[y][x] == 't') {
+					entities.push({
+						name: "table",
+						type: 'wall',
+						pos: {
+							x: 5,
+							y: 6,
+						},
+						color: 'brown',
+					},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 6,
+								y: 6,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 7,
+								y: 6,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 8,
+								y: 6,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 9,
+								y: 6,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 10,
+								y: 6,
+							},
+							color: 'brown',
+						},
+						//left table side
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 5,
+								y: 7,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 5,
+								y: 8,
+							},
+							color: 'brown',
+						},
+						//right table side
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 10,
+								y: 7,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 10,
+								y: 8,
+							},
+							color: 'brown',
+						},
+						//bottom table side
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 6,
+								y: 8,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 7,
+								y: 8,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 8,
+								y: 8,
+							},
+							color: 'brown',
+						},
+						{
+							name: "table",
+							type: 'wall',
+							pos: {
+								x: 9,
+								y: 8,
+							},
+							color: 'brown',
+						},
+						//table top
+						{
+							name: "table",
+							type: 'flat',
+							pos: {
+								x: 5,
+								y: 6,
+							},
+							width: 6,
+							height: 3,
+							color: 'brown',
+						});
+				} else if (currentStage.map[y][x] == 'C') {
+					entities.push({
+						name: "Chris",
+						type: 'NPC',
+						id: 'ChrisBR',
+						pos: {
+							x: 8,
+							y: 5,
+						},
+						color: 'green',
+						},
+						{
+							name: "Chris",
+							type: 'NPC',
+							id: 'ChrisBL',
+							pos: {
+								x: 7,
+								y: 5,
+							},
+							color: 'green',
+						},
+						{
+							name: "Chris",
+							type: 'NPC',
+							id: 'ChrisTR',
+							pos: {
+								x: 8,
+								y: 4,
+							},
+							color: 'green',
+						},
+						{
+							name: "Chris",
+							type: 'NPC',
+							id: 'ChrisTL',
+							pos: {
+								x: 7,
+								y: 4,
+							},
+							color: 'green',
 					});
 				}
 			}

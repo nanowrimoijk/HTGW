@@ -15,7 +15,7 @@ const io = socket(server);
 
 let playerList = [];
 
-io.sockets.on('connection', newConnection, );
+io.sockets.on('connection', newConnection);
 
 function ArrayRemove(arr, value) {
 	return arr.filter(function(ele) {
