@@ -1,17 +1,16 @@
+//server variables
 const express = require('express');
 const app = express();
 const server = app.listen(4000);
-
+const socket = require('socket.io');
+const io = socket(server);
+//discord
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const token = process.env.DISCORD_BOT_SECRET;
-
 const Channel = process.env.THATONE_CHANNEL;
 
 app.use(express.static('public'));
-
-const socket = require('socket.io');
-const io = socket(server);
 
 let playerList = [];
 
@@ -76,7 +75,7 @@ console.clear();
 console.log("server is online");
 
 
-
+//more discord stuff
 client.on('ready', () => {
 	console.log(`${client.user.username} is online`);
 

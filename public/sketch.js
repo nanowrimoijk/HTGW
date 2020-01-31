@@ -1,6 +1,6 @@
 let socket;
 
-let online = true; //default: false
+let online = false; //default: false
 const server = new Server;
 const game = new Game;
 
@@ -12,7 +12,7 @@ let player = {
 	PM: 'P',
 	xy: 'x',
 	HP: Infinity,//300
-	weapon: game.weapons.tiger.Hytex,
+	weapon: game.weapons.lunarshot.Hytex,
 	energy: 5000,
 }
 
@@ -39,7 +39,7 @@ let levels = {
 		hall: {
 			name: "Hallway",
 			type: '2',
-			back: '230',
+			back: 230,
 			Sx: 1,
 			Sy: 0,
 			map: [
@@ -61,6 +61,7 @@ let levels = {
 				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
 				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
 			],
+			walls: [],
 		},
 		office: {
 			name: "Chris's office",
@@ -85,8 +86,246 @@ let levels = {
 				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
 				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
 				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
-			]
-		}
+			],
+			walls: [],
+		},
+	},
+	chapter12: {
+		tutorial: {
+			lv1: {
+				name: "Tutorial Level 1",
+				type: '2',
+				back: 230,
+				Sx: -1,
+				Sy: 0,
+				map: [
+					['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', 'D', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+				],
+				walls: [
+					{
+						name: 'NPC0-BR',
+						id: 'NPC0',
+						type: 'NPC',
+						pos: { x: 6, y: 2 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'NPC0-BL',
+						id: 'NPC0',
+						type: 'NPC',
+						pos: { x: 5, y: 2 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'NPC0-TR',
+						id: 'NPC0',
+						type: 'NPC',
+						pos: { x: 6, y: 1 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'NPC0-TL',
+						id: 'NPC0',
+						type: 'NPC',
+						pos: { x: 5, y: 1 },
+						color: 'red',
+						HP: 300,
+					},
+				],
+			},
+			lv2: {
+				name: "Tutorial Level 2",
+				type: '2',
+				back: 230,
+				Sx: -4,
+				Sy: 10,
+				map: [
+					['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', 'w', 'w', 'w', ' ', ' ', ' ', ' ', 'w', 'w', 'w', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'E', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', 'w', 'w', 'w', ' ', ' ', ' ', ' ', 'w', 'w', 'w', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+					['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+				],
+				walls: [
+					{
+						name: 'enemy0-BR',
+						id: 'enemy0',
+						type: 'enemy',
+						pos: { x: 10, y: 10 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'enemy0-BL',
+						id: 'enemy0',
+						type: 'enemy',
+						pos: { x: 9, y: 10 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'enemy0-TR',
+						id: 'enemy0',
+						type: 'enemy',
+						pos: { x: 10, y: 9 },
+						color: 'red',
+						HP: 300,
+					},
+					{
+						name: 'enemy0-TL',
+						id: 'enemy0',
+						type: 'enemy',
+						pos: { x: 9, y: 9 },
+						color: 'red',
+						HP: 300,
+					},
+				],
+				enemies: [
+					{
+						name: 'enemy0',
+						id: 'enemy0',
+						type: 'enemy',
+						moveAI: 'stationary',
+						attackAI: 'calm',
+						weapon: game.weapons.lunarshot.Lunarian,
+						charge: 0,
+						cooldown: 100,
+						preset: undefined,
+						timer: 100,
+						pos: { x: 14, y: 0 },
+						direction: 'DOWN',
+						color: 'red',
+						HP: 200,
+					},
+				],
+			},
+		},
+		FS: {
+			name: "Faster Blaster Station",
+			type: '2',
+			back: 230,
+			Sx: -3,
+			Sy: 8,
+			map: [
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'E', 'E', ' ', ' ', ' ', ' ', ' ', ' '],
+				['w', ' ', ' ', ' ', ' ', ' ', 'S', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'E', 'E', ' ', ' ', ' ', ' ', ' ', ' '],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
+				[' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', ' ', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
+			],
+			walls: [
+				{
+					name: 'enemy1-BR',
+					id: 'enemy1',
+					type: 'enemy',
+					pos: { x: 44, y: 15 },
+					color: 'red',
+					HP: 300,
+				},
+				{
+					name: 'enemy1-BL',
+					id: 'enemy1',
+					type: 'enemy',
+					pos: { x: 43, y: 15 },
+					color: 'red',
+					HP: 300,
+				},
+				{
+					name: 'enemy1-TR',
+					id: 'enemy1',
+					type: 'enemy',
+					pos: { x: 44, y: 14 },
+					color: 'red',
+					HP: 300,
+				},
+				{
+					name: 'enemy1-TL',
+					id: 'enemy1',
+					type: 'enemy',
+					pos: { x: 43, y: 14 },
+					color: 'red',
+					HP: 300,
+				},
+			],
+			enemies: [
+				{
+					name: 'enemy1',
+					id: 'enemy1',
+					type: 'enemy',
+					moveAI: 'basic',
+					attackAI: 'calm',
+					MT: 0,
+					max_MT: 15,
+					weapon: game.weapons.lunarshot.Lunarian,
+					charge: 0,
+					cooldown: 100,
+					preset: undefined,
+					timer: 100,
+					pos: { x: 47, y: 7 },
+					onL: 19,
+					onR: 49,
+					onU: -4,
+					onD: 22,
+					direction: 'DOWN',
+					color: 'red',
+					HP: 150,
+				},
+			],
+		},
 	},
 	prologue: {
 		hall: {
@@ -1029,10 +1268,10 @@ let thing = {
 let screenWidth = 600; //default: 480
 let screenHeight = 550; //default: 480
 
-let event = "start1"; //default: 'start1'
+let event = "start1t"; //default: 'start1'
 let menu = false; //default: 'main'
 let devTools = false; //default: false
-let currentStage = levels.prologue2.hall; //default: levels.prologue.hall
+let currentStage = levels.chapter12.FS; //default: levels.prologue2.hall
 let entities;
 
 UNIT = 32; //default: 32
@@ -1077,8 +1316,8 @@ let playerList = [
 	Spencer = {
 		type: 'player',
 		pos: {
-			x: -2,
-			y: -2,
+			x: 1,
+			y: 3,
 		},
 		id: 'Spencer',
 		color: 'yellow',
@@ -1089,8 +1328,8 @@ let playerList = [
 	Ray = {
 		type: 'player',
 		pos: {
-			x: -2,
-			y: 0,
+			x: 1,
+			y: 5,
 		},
 		id: 'Ray',
 		color: 'orange',
@@ -1204,7 +1443,6 @@ let textBox = undefined;//default: undefined
 let variables = {
 	prologue: {
 		text1: false,
-		text2: false,
 		text3: false,
 		text4: false,
 		text5: false,
@@ -1295,344 +1533,346 @@ let buttons = {
 
 //runs the different ai for the enemies
 function RunAI(enemy) {
-	//attack AI
-	if (enemy.attackAI == 'calm') {
-		if (enemy.weapon.type == 'charger' && menu == false) {
-			if (enemy.charge < enemy.weapon.max_charge) {
-				enemy.charge += 0.5;
-			}
+	if (player.pos.x >= enemy.onL && player.pos.x <= enemy.onR && player.pos.y >= enemy.onU && player.pos.y <= enemy.onD) {
+		//attack AI
+		if (enemy.attackAI == 'calm') {
+			if (enemy.weapon.type == 'charger' && menu == false) {
+				if (enemy.charge < enemy.weapon.max_charge) {
+					enemy.charge += 0.5;
+				}
 
-			enemy.cooldown -= 1;
-			//console.log(enemy.cooldown);
+				enemy.cooldown -= 1;
+				//console.log(enemy.cooldown);
 
-			if ((enemy.direction == 'DOWN' && (X == enemy.pos.x || X == enemy.pos.x - 1) && Y >= enemy.pos.y) || (enemy.direction == 'LEFT' && (Y == enemy.pos.y || Y == enemy.pos.y - 1) && X <= enemy.pos.x) || (enemy.direction == 'UP' && (X == enemy.pos.x || enemy.pos.x + 1) && Y <= enemy.pos.y) || (enemy.direction == 'RIGHT' && (Y == enemy.pos.y || Y == enemy.pos.y + 1) && X >= enemy.pos.x)) {
-				if (menu == false && textBox == undefined && enemy.weapon != undefined && enemy.cooldown <= 0) {
-					let xx = enemy.pos.x;
-					let yy = enemy.pos.y;
+				if ((enemy.direction == 'DOWN' && (X == enemy.pos.x || X == enemy.pos.x - 1) && Y >= enemy.pos.y) || (enemy.direction == 'LEFT' && (Y == enemy.pos.y || Y == enemy.pos.y - 1) && X <= enemy.pos.x) || (enemy.direction == 'UP' && (X == enemy.pos.x || enemy.pos.x + 1) && Y <= enemy.pos.y) || (enemy.direction == 'RIGHT' && (Y == enemy.pos.y || Y == enemy.pos.y + 1) && X >= enemy.pos.x)) {
+					if (menu == false && textBox == undefined && enemy.weapon != undefined && enemy.cooldown <= 0) {
+						let xx = enemy.pos.x;
+						let yy = enemy.pos.y;
 
-					let x;
-					let y;
-					if (enemy.direction == 'UP') {
-						x = xx;
-						y = yy - 2;
-					} else if (enemy.direction == 'DOWN') {
-						x = xx - 1;
-						y = yy;
-					} else if (enemy.direction == 'RIGHT') {
-						x = xx + 1;
-						y = yy;
-					} else if (enemy.direction == 'LEFT') {
-						x = xx - 2;
-						y = yy - 1;
+						let x;
+						let y;
+						if (enemy.direction == 'UP') {
+							x = xx;
+							y = yy - 2;
+						} else if (enemy.direction == 'DOWN') {
+							x = xx - 1;
+							y = yy;
+						} else if (enemy.direction == 'RIGHT') {
+							x = xx + 1;
+							y = yy;
+						} else if (enemy.direction == 'LEFT') {
+							x = xx - 2;
+							y = yy - 1;
+						}
+
+						let data = {
+							dmg: enemy.charge + enemy.weapon.dmg,
+							id: enemy.id,
+							direction: enemy.direction,
+							pos: {
+								x: x,
+								y: y,
+							},
+							type: 'bullet',
+						}
+
+						entities.push(data);
+						//socket.emit('attack', data);
+						charge = 0;
+						enemy.cooldown = 100;
 					}
-
-					let data = {
-						dmg: enemy.charge + enemy.weapon.dmg,
-						id: enemy.id,
-						direction: enemy.direction,
-						pos: {
-							x: x,
-							y: y,
-						},
-						type: 'bullet',
-					}
-
-					entities.push(data);
-					//socket.emit('attack', data);
-					charge = 0;
-					enemy.cooldown = 100;
 				}
 			}
 		}
-	}
 
-	//movement AI
-	if (enemy.moveAI == 'stationary') {
-		if (enemy.timer <= 0) {
-			let num = Random(4);
-			if ((num == 0 && enemy.preset == undefined) || enemy.preset == 'LEFT') {
-				enemy.direction = 'LEFT';
-				enemy.timer = 100;
-				if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X <= enemy.pos.x) {
-					enemy.preset = 'LEFT';
-				} else {
+		//movement AI
+		if (enemy.moveAI == 'stationary') {
+			if (enemy.timer <= 0) {
+				let num = Random(4);
+				if ((num == 0 && enemy.preset == undefined) || enemy.preset == 'LEFT') {
+					enemy.direction = 'LEFT';
+					enemy.timer = 100;
+					if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X <= enemy.pos.x) {
+						enemy.preset = 'LEFT';
+					} else {
+						enemy.preset = undefined;
+					}
+
+				} else if ((num == 1 && enemy.preset == undefined) || enemy.preset == 'DOWN') {
+					enemy.direction = 'DOWN';
+					enemy.timer = 100;
+					if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y >= enemy.pos.y) {
+						enemy.preset = 'DOWN';
+					} else {
+						enemy.preset = undefined;
+					}
+
+				} else if ((num == 2 && enemy.preset == undefined) || enemy.preset == 'RIGHT') {
+					enemy.direction = 'RIGHT';
+					enemy.timer = 100;
+					if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X >= enemy.pos.x) {
+						enemy.preset = 'RIGHT';
+					} else {
+						enemy.preset = undefined;
+					}
+
+				} else if ((num == 3 && enemy.preset == undefined) || enemy.preset == 'UP') {
+					enemy.direction = 'UP';
+					enemy.timer = 100;
+					if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y <= enemy.pos.y) {
+						enemy.preset = 'UP';
+					} else {
+						enemy.preset = undefined;
+					}
+
+				} else if (enemy.preset != undefined) {
+					switch (enemy.preset) {
+						case 'UP':
+							enemy.direction = 'UP';
+							break;
+						case 'DOWN':
+							enemy.direction = 'DOWN';
+							break;
+						case 'LEFT':
+							enemy.direction = 'LEFT';
+							break;
+						case 'RIGHT':
+							enemy.direction = 'RIGHT';
+							break;
+					}
 					enemy.preset = undefined;
 				}
+				//console.log(num);
+			}
+			enemy.timer -= 1;
+		}
 
-			} else if ((num == 1 && enemy.preset == undefined) || enemy.preset == 'DOWN') {
-				enemy.direction = 'DOWN';
-				enemy.timer = 100;
-				if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y >= enemy.pos.y) {
-					enemy.preset = 'DOWN';
-				} else {
-					enemy.preset = undefined;
-				}
+		if (enemy.moveAI == 'basic') {
+			x = enemy.pos.x + 2;
+			y = enemy.pos.y + 2;
 
-			} else if ((num == 2 && enemy.preset == undefined) || enemy.preset == 'RIGHT') {
-				enemy.direction = 'RIGHT';
-				enemy.timer = 100;
-				if ((Y == enemy.pos.y || Y == enemy.pos.y - 1 || Y == enemy.pos.y + 1) && X >= enemy.pos.x) {
-					enemy.preset = 'RIGHT';
-				} else {
-					enemy.preset = undefined;
-				}
+			let z = X;
+			let w = Y;
+			//console.log(`you: ${z}, ${w}`);
+			//console.log(`them: ${x}, ${y}`);
 
-			} else if ((num == 3 && enemy.preset == undefined) || enemy.preset == 'UP') {
-				enemy.direction = 'UP';
-				enemy.timer = 100;
-				if ((X == enemy.pos.x || X == enemy.pos.x - 1 || X == enemy.pos.x + 1) && Y <= enemy.pos.y) {
-					enemy.preset = 'UP';
-				} else {
-					enemy.preset = undefined;
-				}
-
-			} else if (enemy.preset != undefined) {
-				switch (enemy.preset) {
-					case 'UP':
-						enemy.direction = 'UP';
-						break;
-					case 'DOWN':
-						enemy.direction = 'DOWN';
-						break;
-					case 'LEFT':
-						enemy.direction = 'LEFT';
-						break;
-					case 'RIGHT':
+			//turn system
+			if (x < z) {
+				if (y < w) {
+					if (y + 8 > x) {
 						enemy.direction = 'RIGHT';
-						break;
+					} else if (y < x) {
+						enemy.direction = 'DOWN';
+					}
+				} else if (y > w) {
+					if (y - 8 < x) {
+						enemy.direction = 'RIGHT';
+					} else if (y > x) {
+						enemy.direction = 'UP';
+					}
 				}
-				enemy.preset = undefined;
-			}
-			//console.log(num);
-		}
-		enemy.timer -= 1;
-	}
-
-	if (enemy.moveAI == 'basic') {
-		x = enemy.pos.x + 2;
-		y = enemy.pos.y + 2;
-
-		let z = X;
-		let w = Y;
-		//console.log(`you: ${z}, ${w}`);
-		//console.log(`them: ${x}, ${y}`);
-
-		//turn system
-		if (x < z) {
-			if (y < w) {
-				if (y + 8 > x) {
-					enemy.direction = 'RIGHT';
-				} else if (y < x) {
-					enemy.direction = 'DOWN';
-				}
-			} else if (y > w) {
-				if (y - 8 < x) {
-					enemy.direction = 'RIGHT';
-				} else if (y > x) {
-					enemy.direction = 'UP';
+			} else if (x > z) {
+				if (y < w) {
+					if (y > x) {
+						enemy.direction = 'LEFT';
+					} else if (y < x) {
+						enemy.direction = 'DOWN';
+					}
+				} else if (y > w) {
+					if (y < x) {
+						enemy.direction = 'LEFT';
+					} else if (y > x) {
+						enemy.direction = 'UP';
+					}
 				}
 			}
-		} else if (x > z) {
-			if (y < w) {
-				if (y > x) {
-					enemy.direction = 'LEFT';
-				} else if (y < x) {
-					enemy.direction = 'DOWN';
-				}
-			} else if (y > w) {
-				if (y < x) {
-					enemy.direction = 'LEFT';
-				} else if (y > x) {
-					enemy.direction = 'UP';
-				}
-			}
-		}
 
-		let found = false;
+			let found = false;
 
-		function enemyMove(poz, dir) {
-			found = false;
+			function enemyMove(poz, dir) {
+				found = false;
 
-			if (dir == 'UP') {
-				entities.forEach(function(ele) {
-					if (ele.pos.y == poz.y - 3 || poz.y - 3 == player.pos.y) {
-						if (ele.pos.x == poz.x || poz.x == player.pos.x) {
-							found = true;
-						}
-					}
-				});
-
-			} else if (dir == 'DOWN') {
-				entities.forEach(function(ele) {
-					if (ele.pos.y == poz.y + 2 || poz.y + 2 == player.pos.y) {
-						if (ele.pos.x == poz.x || poz.x == player.pos.x) {
-							found = true;
-						}
-					}
-				});
-
-			} else if (dir == 'LEFT') {
-				entities.forEach(function(ele) {
-					if (ele.pos.x == poz.x - 3 || poz.x - 3 == player.pos.x) {
-						if (ele.pos.y == poz.y || poz.y == player.pos.y) {
-							found = true;
-						}
-					}
-				});
-
-			} else if (dir == 'RIGHT') {
-				entities.forEach(function(ele) {
-					if (ele.pos.x == poz.x + 2 || poz.x + 2 == player.pos.x) {
-						if (ele.pos.y == poz.y || poz.y == player.pos.y) {
-							found = true;
-						}
-					}
-				});
-			}
-		}
-
-		//movement system
-		if (enemy.MT == 0) {
-			if (enemy.direction == 'UP') {
-				enemyMove(enemy.pos, 'UP');
-
-				if (found == false) { // go up
-					enemy.pos.y -= 1;
-					currentStage.walls.forEach(function(ele) {
-						if (ele.id == enemy.id) {
-							ele.pos.y -= 1;
-						}
-					});
-
-				} else {
-					enemyMove(enemy.pos, 'LEFT');
-
-					if (found == false) {// if not then turn left
-						enemy.pos.x -= 1;
-						currentStage.walls.forEach(function(ele) {
-							if (ele.id == enemy.id) {
-								ele.pos.x -= 1;
+				if (dir == 'UP') {
+					entities.forEach(function(ele) {
+						if (ele.pos.y == poz.y - 3 || poz.y - 3 == player.pos.y) {
+							if (ele.pos.x == poz.x || poz.x == player.pos.x) {
+								found = true;
 							}
-						});
-					} else {
-						enemyMove(enemy.pos, 'RIGHT');
-
-						if (found == false) {
-							enemy.pos.x += 1;
-							currentStage.walls.forEach(function(ele) {
-								if (ele.id == enemy.id) {
-									ele.pos.x += 1;
-								}
-							});
-						}
-					}
-				}
-			} else if (enemy.direction == 'DOWN') {
-				enemyMove(enemy.pos, 'DOWN');
-
-				if (found == false) { // go down
-					enemy.pos.y += 1;
-					currentStage.walls.forEach(function(ele) {
-						if (ele.id == enemy.id) {
-							ele.pos.y += 1;
 						}
 					});
 
-				} else {
-					enemyMove(enemy.pos, 'LEFT');
-
-					if (found == false) {// if not then turn left
-						enemy.pos.x -= 1;
-						currentStage.walls.forEach(function(ele) {
-							if (ele.id == enemy.id) {
-								ele.pos.x -= 1;
+				} else if (dir == 'DOWN') {
+					entities.forEach(function(ele) {
+						if (ele.pos.y == poz.y + 2 || poz.y + 2 == player.pos.y) {
+							if (ele.pos.x == poz.x || poz.x == player.pos.x) {
+								found = true;
 							}
-						});
-					} else {
-						enemyMove(enemy.pos, 'RIGHT');
-
-						if (found == false) {
-							enemy.pos.x += 1;
-							currentStage.walls.forEach(function(ele) {
-								if (ele.id == enemy.id) {
-									ele.pos.x += 1;
-								}
-							});
-						}
-					}
-				}
-			} else if (enemy.direction == 'LEFT') {
-				enemyMove(enemy.pos, 'LEFT');
-
-				if (found == false) { // go left
-					enemy.pos.x -= 1;
-					currentStage.walls.forEach(function(ele) {
-						if (ele.id == enemy.id) {
-							ele.pos.x -= 1;
 						}
 					});
 
-				} else {
+				} else if (dir == 'LEFT') {
+					entities.forEach(function(ele) {
+						if (ele.pos.x == poz.x - 3 || poz.x - 3 == player.pos.x) {
+							if (ele.pos.y == poz.y || poz.y == player.pos.y) {
+								found = true;
+							}
+						}
+					});
+
+				} else if (dir == 'RIGHT') {
+					entities.forEach(function(ele) {
+						if (ele.pos.x == poz.x + 2 || poz.x + 2 == player.pos.x) {
+							if (ele.pos.y == poz.y || poz.y == player.pos.y) {
+								found = true;
+							}
+						}
+					});
+				}
+			}
+
+			//movement system
+			if (enemy.MT == 0) {
+				if (enemy.direction == 'UP') {
 					enemyMove(enemy.pos, 'UP');
 
-					if (found == false) {// if not then go up
+					if (found == false) { // go up
 						enemy.pos.y -= 1;
 						currentStage.walls.forEach(function(ele) {
 							if (ele.id == enemy.id) {
 								ele.pos.y -= 1;
 							}
 						});
-					} else {
-						enemyMove(enemy.pos, 'DOWN');
 
-						if (found == false) {
-							enemy.pos.y += 1;
+					} else {
+						enemyMove(enemy.pos, 'LEFT');
+
+						if (found == false) {// if not then turn left
+							enemy.pos.x -= 1;
 							currentStage.walls.forEach(function(ele) {
 								if (ele.id == enemy.id) {
-									ele.pos.y += 1;
+									ele.pos.x -= 1;
 								}
 							});
+						} else {
+							enemyMove(enemy.pos, 'RIGHT');
+
+							if (found == false) {
+								enemy.pos.x += 1;
+								currentStage.walls.forEach(function(ele) {
+									if (ele.id == enemy.id) {
+										ele.pos.x += 1;
+									}
+								});
+							}
 						}
 					}
-				}
-			} else if (enemy.direction == 'RIGHT') {
-				enemyMove(enemy.pos, 'RIGHT');
+				} else if (enemy.direction == 'DOWN') {
+					enemyMove(enemy.pos, 'DOWN');
 
-				if (found == false) { // go right
-					enemy.pos.x += 1;
-					currentStage.walls.forEach(function(ele) {
-						if (ele.id == enemy.id) {
-							ele.pos.x += 1;
-						}
-					});
-
-				} else {
-					enemyMove(enemy.pos, 'UP');
-
-					if (found == false) {// if not then go up
-						enemy.pos.y -= 1;
+					if (found == false) { // go down
+						enemy.pos.y += 1;
 						currentStage.walls.forEach(function(ele) {
 							if (ele.id == enemy.id) {
-								ele.pos.y -= 1;
+								ele.pos.y += 1;
 							}
 						});
-					} else {
-						enemyMove(enemy.pos, 'DOWN');
 
-						if (found == false) {
-							enemy.pos.y += 1;
+					} else {
+						enemyMove(enemy.pos, 'LEFT');
+
+						if (found == false) {// if not then turn left
+							enemy.pos.x -= 1;
 							currentStage.walls.forEach(function(ele) {
 								if (ele.id == enemy.id) {
-									ele.pos.y += 1;
+									ele.pos.x -= 1;
 								}
 							});
+						} else {
+							enemyMove(enemy.pos, 'RIGHT');
+
+							if (found == false) {
+								enemy.pos.x += 1;
+								currentStage.walls.forEach(function(ele) {
+									if (ele.id == enemy.id) {
+										ele.pos.x += 1;
+									}
+								});
+							}
+						}
+					}
+				} else if (enemy.direction == 'LEFT') {
+					enemyMove(enemy.pos, 'LEFT');
+
+					if (found == false) { // go left
+						enemy.pos.x -= 1;
+						currentStage.walls.forEach(function(ele) {
+							if (ele.id == enemy.id) {
+								ele.pos.x -= 1;
+							}
+						});
+
+					} else {
+						enemyMove(enemy.pos, 'UP');
+
+						if (found == false) {// if not then go up
+							enemy.pos.y -= 1;
+							currentStage.walls.forEach(function(ele) {
+								if (ele.id == enemy.id) {
+									ele.pos.y -= 1;
+								}
+							});
+						} else {
+							enemyMove(enemy.pos, 'DOWN');
+
+							if (found == false) {
+								enemy.pos.y += 1;
+								currentStage.walls.forEach(function(ele) {
+									if (ele.id == enemy.id) {
+										ele.pos.y += 1;
+									}
+								});
+							}
+						}
+					}
+				} else if (enemy.direction == 'RIGHT') {
+					enemyMove(enemy.pos, 'RIGHT');
+
+					if (found == false) { // go right
+						enemy.pos.x += 1;
+						currentStage.walls.forEach(function(ele) {
+							if (ele.id == enemy.id) {
+								ele.pos.x += 1;
+							}
+						});
+
+					} else {
+						enemyMove(enemy.pos, 'UP');
+
+						if (found == false) {// if not then go up
+							enemy.pos.y -= 1;
+							currentStage.walls.forEach(function(ele) {
+								if (ele.id == enemy.id) {
+									ele.pos.y -= 1;
+								}
+							});
+						} else {
+							enemyMove(enemy.pos, 'DOWN');
+
+							if (found == false) {
+								enemy.pos.y += 1;
+								currentStage.walls.forEach(function(ele) {
+									if (ele.id == enemy.id) {
+										ele.pos.y += 1;
+									}
+								});
+							}
 						}
 					}
 				}
+				enemy.MT = enemy.max_MT;
+			} else {
+				enemy.MT -= 1;
 			}
-			enemy.MT = enemy.max_MT;
-		} else {
-			enemy.MT -= 1;
 		}
 	}
 }
@@ -1925,7 +2165,7 @@ let defeated = false;//default: false
 //runs the tutorial Levels
 function tutorial() {
 	if (event == 'tutorial1') {
-		currentStage = levels.chapter1.tutorial.lv1;
+		currentStage = levels.chapter12.tutorial.lv1;
 		stageChanged = true;
 		player.weapon = game.weapons.lunarshot.Hytex;
 		event = 'tutorial2';
@@ -1954,7 +2194,7 @@ function tutorial() {
 			}
 		}
 
-		levels.chapter1.tutorial.lv1.walls.forEach(function(ele) {
+		levels.chapter12.tutorial.lv1.walls.forEach(function(ele) {
 			if (ele.id == 'NPC0') {
 				if (ele.HP <= 0) {
 					defeated = true;
@@ -2027,6 +2267,7 @@ function setup() {
 
 
 function draw() {
+	//console.log(player.pos.x + ', ' + player.pos.y);
 	clear();
 	createCanvas(windowWidth - 20, windowHeight - 20);
 	background(currentStage.back);
@@ -2298,18 +2539,18 @@ function draw() {
 						type: 'NPC',
 						id: 'ChrisBR',
 						pos: {
-							x: 8,
-							y: 5,
+							x: x,
+							y: y,
 						},
 						color: 'green',
-						},
+					},
 						{
 							name: "Chris",
 							type: 'NPC',
 							id: 'ChrisBL',
 							pos: {
-								x: 7,
-								y: 5,
+								x: x - 1,
+								y: y,
 							},
 							color: 'green',
 						},
@@ -2318,8 +2559,8 @@ function draw() {
 							type: 'NPC',
 							id: 'ChrisTR',
 							pos: {
-								x: 8,
-								y: 4,
+								x: x,
+								y: y - 1,
 							},
 							color: 'green',
 						},
@@ -2328,13 +2569,19 @@ function draw() {
 							type: 'NPC',
 							id: 'ChrisTL',
 							pos: {
-								x: 7,
-								y: 4,
+								x: x - 1,
+								y: y - 1,
 							},
 							color: 'green',
-					});
+						});
 				}
 			}
+		}
+
+		if (currentStage.walls[0] != undefined) {
+			currentStage.walls.forEach(function(ele) {
+				entities.push(ele);
+			});
 		}
 
 		entities.forEach(function(ele) {
@@ -3127,7 +3374,7 @@ function mouseReleased() {
 			}
 
 			let data = {
-				dmg: charge + player.weapon.dmg,
+				dmg: charge * 3 + player.weapon.dmg,
 				id: socket.id,
 				direction: player.direction,
 				pos: {

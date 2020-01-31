@@ -1,29 +1,10 @@
 class Game {
 	constructor() {
-		this.levels = {
-		  test: {
-				name: "test 2",
-				type: '2',
-				back: 230,
-				WIDTH: 20,
-				HEIGHT: 20,
-				map: [
-					['w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'],
-					['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
-					['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
-					['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
-					['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
-					['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
-					['w', ' ', ' ', ' ', ' ', ' ', ' ', 'w'],
-					["w", "w", 'w', 'w', 'w', 'w', 'w', 'w'],
-				],
-			}
-		};
 		this.weapons = {
 			//shooters
 			lunarshot: {
 				Hytex: {
-					dmg: 27,
+					dmg: 10,
 					energy: 25,
 					max_charge: 60,
 					range: 4.5,
